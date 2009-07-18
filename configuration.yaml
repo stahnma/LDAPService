@@ -1,10 +1,17 @@
 %YAML 1.2
 ---
 LDAPInfo:
-  Base: 'dc=websages,dc=org'
+  Base: 'dc=websages,dc=com'
+  Shell: loginShell
+  Mail: mail
+  Password: userPassword
+  Phone: telephoneNumber
+
+# Add custom attrs here
+CustomAttrs:
+  Pagermail: pagermail
 
 AvailableShells: 
 - /bin/bash
 - /bin/zsh
 - /sbin/sh
-

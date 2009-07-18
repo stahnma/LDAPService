@@ -13,3 +13,9 @@ User Interface Management
 
 Account
 
+
+
+Requiments:
+-----------
+ python-ldap
+ python-yaml
