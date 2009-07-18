@@ -12,25 +12,24 @@
 <body>
 
 <div id="content">
-<h1>Self service password</h1>
-<img src="style/ltb-logo.png" alt="Logo" />
-<h2>Cannot access to LDAP directory</h2>
+<h1><%= header -%></h1>
+<img src="style/logo.gif" alt="Logo" />
 <form action="#" method="post">
     <table>
-    <tr><th>Login</th>
+   <!--  <tr><th>Login</th>
     <td><input type="text" name="login" /></td></tr>
     <tr><th>Old password</th>
     <td><input type="password" name="oldpassword" /></td></tr>
     <tr><th>New password</th>
     <td><input type="password" name="newpassword" /></td></tr>
-    <tr><th>Confirm</th>
-    <td><input type="password" name="confirmpassword" /></td></tr>
+    <tr><th>Confirm</th> 
+    <td><input type="password" name="confirmpassword" /></td></tr> --> 
     <% attrs.each do | attr| -%>
 <tr><th><%= attr[0] -%></th> <td><input type="text" name=<%= attr[1] -%> /></td></tr>
     <% end -%>
    
     <tr><td colspan="2">
-    <input type="submit" value="Send" /></td></tr>
+    <input type="submit" value="Update" /></td></tr>
     </table>
 </form>
 </div>

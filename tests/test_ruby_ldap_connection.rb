@@ -37,9 +37,10 @@ def get_file_as_string(filename)
   end
   return data
 end
-print "Content-type: text/html\n\n"
+#print "Content-type: text/html\n\n"
 template = get_file_as_string("views/manage.erb")
 message = ERB.new(template, 0, "-")
+header = yamls['Site'] + " user management"
 title = 'LDAP Account Self Service'
 attrs = yamls['UserWritableAttrs']
 puts message.result(binding)
