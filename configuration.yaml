@@ -1,17 +1,16 @@
-%YAML 1.2
----
 LDAPInfo:
-  Base: 'dc=websages,dc=com'
+  Host:  duo.stahnkage.com
+  BindDN: uid=stahnma,ou=people,dc=stahnkage,dc=com
+  #BindPW: You can put a PW here, or use ENV variable LDAP_PASSWORD
+  BaseDN: dc=stahnkage,dc=com
+
+UserWritableAttrs:
   Shell: loginShell
   Mail: mail
   Password: userPassword
   Phone: telephoneNumber
-
-# Add custom attrs here
-CustomAttrs:
-  Pagermail: pagermail
-
-AvailableShells: 
-- /bin/bash
-- /bin/zsh
-- /sbin/sh
+  #FIXME figure that part out
+  #loginShells:
+  #  - /bin/bash
+  #  - /bin/zsh
+  #  - /sbin/sh

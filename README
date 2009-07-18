@@ -17,5 +17,6 @@ Account
 
 Requiments:
 -----------
- python-ldap
- python-yaml
+ rubygems
+ ruby-ldap
+
