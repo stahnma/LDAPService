@@ -1,0 +1,10 @@
+%YAML 1.2
+---
+LDAPInfo:
+  Base: 'dc=websages,dc=org'
+
+AvailableShells: 
+- /bin/bash
+- /bin/zsh
+- /sbin/sh
+

@@ -1,0 +1,15 @@
+
+Just some thoughts
+
+User Interface Management
+- Set Shell - read from available shells in yaml?
+- Set Phone number - mulitple types (check the LDAP Schema)
+- upload SSH Key (cfmgmt to dist on the back side)
+- set preferred email
+- allow password reset
+- temp password reset
+- set password encryption type in yaml config
+
+
+Account
+
