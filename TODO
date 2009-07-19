@@ -1,0 +1,12 @@
+Almost everything
+
+
+* See if you can combine erb templates for less editing.  I think you can.
+* Write the back end 
+* Validate against the directory
+* Self-service update
+* SSH Key
+* GPG Key stuff
+* mail token
+* Have a malicious user test
+* Write input sanitation routines
