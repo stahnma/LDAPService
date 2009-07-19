@@ -1,5 +1,6 @@
 Site: Stahnkage.com
 # Place logo in styles
+Favicon: favicon.ico
 Logo: logo.gif
 LDAPInfo:
   Host:  duo.stahnkage.com
