@@ -2,6 +2,7 @@
 
 
 require 'yaml'
+require 'ldap'
 
 
 
@@ -21,5 +22,8 @@ def loadConfig(filename)
     return config
 end
 
+# login
+# Update attrs
+# reset pw
+# admin reset
 
-#loadConfig('/tmp/foo')
