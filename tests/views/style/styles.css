@@ -71,22 +71,37 @@ text-align: right;
 
 form input {
 border:1px solid #c2e1ef;
+background:#FFFFFF 5px 5px no-repeat;
 padding:5px;
+padding-left:25px;
 width: 200px;
 }
+
+
+form input[type=submit] { 
+background:#DEDEDE ;
+width: 200px;
+font-family:Arial, Helvetica, Verdana;
+font-size:10pt;
+}
+
 
 form input[name=login] {
 background:#FFFFFF url("user_suit.png") 5px 5px no-repeat;
 padding-left:25px;
 }
 
-/* #FIXME need to reszie the mail png */
+
+/*
 form input[name=mail] {
 background:#FFFFFF url("mail.png") 5px 5px no-repeat;
 padding-left:25px;
 }
+*/
+
 
 form input[type=password] {
 background:#FFFFFF url("key.png") 5px 5px no-repeat;
 padding-left: 25px;
 }
+
