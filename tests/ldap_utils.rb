@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'controller'
+require 'utils'
 require 'ldap'
 require 'pp'
 
@@ -31,7 +31,8 @@ class LdapConnection
   
    def getUserEntry(uid)
      @bound.search(@ldapconf['BaseDN'], LDAP::LDAP_SCOPE_SUBTREE, "(uid=#{uid})") do |user|
-         return user
+         puts "Search for #{uid}"
+         return user.to_hash
      end
    end
 
@@ -66,9 +67,9 @@ end
 # create a session
 # bind as a manager
 
-l  = LdapConnection.new()
-puts l.inspect
-l.login('stahnma', ENV['LDAP_PASSWORD'])
-l.getUsers()
-l.getUserEntry('stahnjd')
+#l  = LdapConnection.new()
+#puts l.inspect
+#l.login('stahnma', ENV['LDAP_PASSWORD'])
+#l.getUsers()
+#l.getUserEntry('stahnjd')
 #l.connect()

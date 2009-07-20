@@ -12,9 +12,13 @@
 <body>
 
 <div id="content">
-<!-- <h1><%= header -%></h1> -->
 <img src="style/logo.gif" alt="Logo" />
-<form action="#" method="post">
+<% if not errors.nil? %>
+  <div id="errorExplanation">
+    <%=  errors %>
+  </div>
+<% end -%>
+<form action=# method="post">
     <table>
     <tr><th>Login</th>
     <td><input type="text" name="login" /></td></tr>
@@ -23,6 +27,7 @@
     <tr><td>&nbsp;</td><td>
     <input type="submit" value="Login" /></td></tr>
     </table>
+    <input type="hidden" name="action" value="login"> 
 </form>
 </div>
 </body>

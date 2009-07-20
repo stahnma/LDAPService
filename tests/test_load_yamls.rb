@@ -2,7 +2,7 @@
 
 require 'yaml'
 require 'test/unit'
-require 'controller'
+require 'utils'
 
 class TC_yamlTest < Test::Unit::TestCase
 #  def setup 
@@ -28,7 +28,7 @@ class TC_yamlTest < Test::Unit::TestCase
   end
   
   def test_not_valid_yaml
-     assert_raise( ArgumentError ) { loadConfig('/etc/passwd') }
+     assert_raise( ArgumentError ) { loadConfig('/etc/hosts') }
   end
   
   def test_perms
