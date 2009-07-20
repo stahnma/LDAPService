@@ -8,7 +8,7 @@ require 'pp'
 class LdapConnection 
   
    def initialize()
-     config = loadConfig('../configuration.yaml')
+     config = loadConfig('../config2.yaml')
      @ldapconf = config['LDAPInfo']
      @conn = LDAP::Conn.new(@ldapconf['Host']) 
    end

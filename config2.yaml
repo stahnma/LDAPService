@@ -1,0 +1,23 @@
+Site: Open Source Designs
+# Place logo in styles
+Style: style
+Favicon: favicon.ico
+Logo: logo.png
+AltLogo: LDAP Self Service
+LDAPInfo:
+  Host:  ldap.example.com
+  BindDN: uid=stahnma,ou=people,dc=example,dc=com
+  #BindPW: You can put a PW here, or use ENV variable LDAP_PASSWORD
+  BaseDN: dc=example,dc=com
+
+UserWritableAttrs:
+  Shell: loginShell
+  Mail: mail
+  Phone: telephoneNumber
+  PagerMail: pager
+#  Password: userPassword
+  #FIXME figure that part out
+  #loginShells:
+  #  - /bin/bash
+  #  - /bin/zsh
+  #  - /sbin/sh

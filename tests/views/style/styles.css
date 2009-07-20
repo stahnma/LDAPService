@@ -41,6 +41,11 @@ text-decoration:none;
 color:#336699;
 }
 
+a:hover {
+text-decoration: underline;
+color:#336699;
+}
+
 #content {
 margin:20px 40px;
 padding:10px;
@@ -80,7 +85,8 @@ width: 200px;
 
 form input[type=submit] { 
 background:#f0f0f0 ;
-width: 200px;
+text-align: center;
+width: 220px;
 font-family:Arial, Helvetica, Verdana;
 font-size:10pt;
 }
@@ -123,9 +129,21 @@ padding-left: 25px;
   background-color: #f0f0f0;
   margin-left: auto ;
   margin-right: auto ;
-
 }
 
+#footer {
+  width: 500px;
+  text-align: center;
+  font-size: 8pt;
+  margin-left: auto ;
+  margin-right: auto ;
+}
+
+#forgot {
+/*  width: 500px; */
+  text-align: right;
+  font-size: 8pt;
+  margin-left: auto ;
 /*
 #errorExplanation h2 {
   text-align: left;

@@ -13,18 +13,38 @@ def get_file_as_string(filename)
   return data
 end
 
+#TODO Break out display into a seperate method 
+#  that include the header/footer automatically
+#
 def renderLogin(options = {})
   puts "Content-type: text/html\n\n" 
-  config = loadConfig('../configuration.yaml')
-  template = get_file_as_string("views/login.erb")
+  config = loadConfig('../config2.yaml')
+  template = get_file_as_string("views/header.erb")
   message = ERB.new(template, 0, "-")
   #puts options[:errors] if not options[:errors].nil?
      errors = options[:errors]
   #end 
   header = config['Site'] + " user management"
   title = 'LDAP Account Self Service'
+  if defined? config['AltLogo'] 
+    alt_logo = config['AltLogo']
+  else
+    alt_logo = ""
+  end
+  logo = config['Style'].to_s + '/' + config['Logo'].to_s
+  style = config['Style']
   attrs = config['UserWritableAttrs']
-  puts message.result(binding)
+  site = config['Site']
+  output =  message.result(binding)
+  template = get_file_as_string("views/login.erb")
+  message = ERB.new(template, 0, "-")
+  output += message.result(binding)
+  template = get_file_as_string("views/footer.erb")
+  message = ERB.new(template, 0, "-")
+  output += message.result(binding)
+  puts output
+  
+  
 end
 
 def fillPost()
@@ -44,7 +64,7 @@ def login(username, password)
   rescue LDAP::ResultError => boom
     #raise LDAP::ResultError, "Invalid User/Password combination", caller
     #puts "Send back to #{ENV['HTTP_REFERER']} with an error message in the message box"
-    renderLogin( { :errors => "Invalid Username/Password Combination" } )
+    renderLogin( { :errors => "Invalid Login/Password Combination" } )
     exit 1
   end
   return l
