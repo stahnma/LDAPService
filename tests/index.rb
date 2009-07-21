@@ -18,11 +18,13 @@ end
 session = CGI::Session.new(cgi, 'new_session' => true)
 
 if not cgi.has_key?('action') 
-  renderLogin()
+  renderfarm()
 elsif cgi.params['action'] = 'login'
   session['ldap']  = login(cgi['login'], cgi['password']) 
   if (session['ldap'])
-     renderGood(session['ldap'])
+     renderGood(session)
   end
+  puts "Content-Type: text/html\n\n"
+  puts "Fell through the cracks."
 end
 session.close

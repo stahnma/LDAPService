@@ -2,6 +2,8 @@
 
 require 'erb'
 require 'utils'
+require 'cgi'
+require 'cgi/session'
 
 
 def get_file_as_string(filename)
@@ -13,47 +15,39 @@ def get_file_as_string(filename)
   return data
 end
 
-#TODO Break out display into a seperate method 
-#  that include the header/footer automatically
-#
-def renderLogin(options = {})
-  puts "Content-type: text/html\n\n" 
-  config = loadConfig('../config2.yaml')
+# Pass a header param set
+def header(config, options)
+  errors = options[:errors]
   template = get_file_as_string("views/header.erb")
   message = ERB.new(template, 0, "-")
-  #puts options[:errors] if not options[:errors].nil?
-     errors = options[:errors]
-  #end 
-  header = config['Site'] + " user management"
-  title = 'LDAP Account Self Service'
-  if defined? config['AltLogo'] 
-    alt_logo = config['AltLogo']
-  else
-    alt_logo = ""
-  end
-  logo = config['Style'].to_s + '/' + config['Logo'].to_s
-  style = config['Style']
-  attrs = config['UserWritableAttrs']
-  site = config['Site']
-  output =  message.result(binding)
-  template = get_file_as_string("views/login.erb")
-  message = ERB.new(template, 0, "-")
-  output += message.result(binding)
-  template = get_file_as_string("views/footer.erb")
-  message = ERB.new(template, 0, "-")
-  output += message.result(binding)
-  puts output
-  
-  
+  output = message.result(binding)
+  return output
 end
 
-def fillPost()
-  post = {}
-  STDIN.read.split('&').each do | line| 
-     key, val = line.split('=')
-     post[key] = val
-  end
-  return post
+# Footer
+def footer(config, options)
+  template = get_file_as_string("views/footer.erb")
+  message = ERB.new(template, 0, "-")
+  output = message.result(binding)
+  return output
+end
+
+# Content
+def content(config, contentfile, options)
+  template = get_file_as_string("views/" + contentfile)
+  message = ERB.new(template, 0, "-")
+  output = message.result(binding)
+  return output
+end
+
+#renderfarm
+def renderfarm(erbfile = 'login.erb', options = {})
+  config = loadConfig('../config2.yaml')
+  output = header(config, options)
+  output += content(config, erbfile, options)
+  output += footer(config, options)
+  puts "Content-type: text/html\n\n" 
+  puts output
 end
 
 def login(username, password)
@@ -64,15 +58,27 @@ def login(username, password)
   rescue LDAP::ResultError => boom
     #raise LDAP::ResultError, "Invalid User/Password combination", caller
     #puts "Send back to #{ENV['HTTP_REFERER']} with an error message in the message box"
-    renderLogin( { :errors => "Invalid Login/Password Combination" } )
+   # puts "Content-type: text/html\n\n"
+   # puts "Fail whale"
+   renderfarm( 'login.erb' , { :errors => "Invalid Login/Password Combination" } )
     exit 1
   end
   return l
 end
 
-def renderGood(l)
+def renderGood(session)
+  l = session['ldap']
   puts "Content-type: text/html\n\n" 
   puts "Edit information please."
+  puts "This is session "
+  
+  puts "<br/>"
+   puts session.inspect
+  puts "<br/>"
+  puts session.session_id
+  
+  
+  puts "<br/>"
   # Ideally you read some of this stuff from a cookie
   a = l.getUserEntry('stahnjd')
   a.each do | key, value|

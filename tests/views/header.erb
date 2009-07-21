@@ -1,19 +1,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <title><%= title %></title>
+    <title><%= config['Title'] %></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
     <meta http-equiv="cache-control" content="no-cache" />
-    <link rel="stylesheet" type="text/css" href="<%= style -%>/styles.css" />
-    <link href="<%= style -%>/favicon.ico" rel="icon" type="image/x-icon" />
-    <link href="<%= style -%>/favicon.ico" rel="shortcut icon" />
+    <link rel="stylesheet" type="text/css" href="<%= config['Style'] -%>/styles.css" />
+    <link href="<%= config['Style'] -%>/favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="<%= config['Style'] -%>/favicon.ico" rel="shortcut icon" />
 </head>
 <body>
 
 <div id="content">
-<img src="<%= logo -%>" alt="<%= alt_logo -%> " />
-<% if not errors.nil? %>
+<img src="<%= config['Style'] -%>/<%= config['Logo'] -%>" alt="<%= config['AltLogo'] -%>" title="<%= config['AltLogo'] -%>" />
+<% if not options[:errors].nil? -%>
   <div id="errorExplanation">
     <%=  errors %>
   </div>
