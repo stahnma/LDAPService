@@ -19,7 +19,12 @@ session['config'] = config
 if not cgi.has_key?('action') 
   markup = renderfarm()
 elsif cgi.params['action'].to_s == 'login'
-  session['ldap']  = login(cgi['login'], cgi['password']) 
+  begin 
+    session['ldap']  = login(cgi['login'], cgi['password']) 
+  rescue  LDAP::ResultError
+     options = {:errors => "Invalid Login/Password Combination"}
+     renderfarm('login.erb', options)
+  end
   session['login'] = cgi['login'].to_s
   if (session['ldap'])
      markup = renderGood(session)
@@ -35,3 +40,5 @@ end
 cgi.out{ 
    markup
 }
+session.close()
+# TODO - make a logout method

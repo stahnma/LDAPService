@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 
 require 'erb'
+require 'ldap_utils'
 require 'utils'
 require 'cgi'
 require 'cgi/session'
@@ -21,7 +22,7 @@ def header(config, options)
   template = get_file_as_string("../views/header.erb")
   message = ERB.new(template, 0, "-")
   output = message.result(binding)
-  return output
+  return output.to_s
 end
 
 # Footer
@@ -60,8 +61,9 @@ def login(username, password)
     #puts "Send back to #{ENV['HTTP_REFERER']} with an error message in the message box"
    # puts "Content-type: text/html\n\n"
    # puts "Fail whale"
-   renderfarm( 'login.erb' , { :errors => "Invalid Login/Password Combination" } )
-    exit 1
+   raise LDAP::ResultError, "Invalid User/Password combination", caller
+
+   #return renderfarm( 'login.erb' , { :errors => "Invalid Login/Password Combination" } )
   end
   return l
 end
