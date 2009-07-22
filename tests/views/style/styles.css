@@ -77,8 +77,8 @@ text-align: right;
 form input {
 border:1px solid #c2e1ef;
 background:#FFFFFF 5px 5px no-repeat;
-padding:5px;
-padding-left:25px;
+padding:5px; 
+/* padding-left:25px; */
 width: 200px;
 }
 
@@ -86,13 +86,14 @@ width: 200px;
 form input[type=submit] { 
 background:#f0f0f0 ;
 text-align: center;
-width: 220px;
+width: 100px;
 font-family:Arial, Helvetica, Verdana;
 font-size:10pt;
 }
 
 
 form input[name=login] {
+padding-left:25px;
 background:#FFFFFF url("user_suit.png") 5px 5px no-repeat;
 padding-left:25px;
 }
@@ -107,6 +108,7 @@ padding-left:25px;
 
 
 form input[type=password] {
+padding-left:25px;
 background:#FFFFFF url("key.png") 5px 5px no-repeat;
 padding-left: 25px;
 }

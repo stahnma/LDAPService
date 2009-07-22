@@ -1,11 +1,11 @@
-require "cgi"
-require "cgi/session"
+#!/usr/bin/ruby
+require 'cgi'
+require 'cgi/session'
 
-
-cgi = CGI.new("html3") 
-sess = CGI::Session.new(cgi, "session_key" => "rubyweb", "prefix" => "web-session.") 
-cgi.out{ 
-  cgi.html{
-        "\nCustomer #{sess['CustID']} orders an #{sess['Part']}"
-  }
-}
+cgi = CGI.new("html3")
+sess = CGI::Session.new(cgi)
+if sess['lastaccess']
+  msg = "<p>Last here on #{sess['lastaccess']}"
+else
+  msg = "<p>You must be new here"
+end

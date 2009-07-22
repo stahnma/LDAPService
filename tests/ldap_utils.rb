@@ -15,10 +15,15 @@ class LdapConnection
    
    def login(user, pw)
      dn = 'uid=' + user + ',ou=people,' + @ldapconf['BaseDN']
+     if pw.nil? or pw == ''
+       raise LDAP::ResultError, "Invalid User/Password combination", caller
+     end
+        
      begin
        @bound = @conn.bind(dn,  pw) 
      rescue LDAP::ResultError
        raise LDAP::ResultError, "Invalid User/Password combination", caller
+       return false
      end
      return true
    end
@@ -31,7 +36,6 @@ class LdapConnection
   
    def getUserEntry(uid)
      @bound.search(@ldapconf['BaseDN'], LDAP::LDAP_SCOPE_SUBTREE, "(uid=#{uid})") do |user|
-         puts "Search for #{uid}"
          return user.to_hash
      end
    end

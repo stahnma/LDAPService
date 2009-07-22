@@ -66,32 +66,55 @@ def login(username, password)
   return l
 end
 
-def renderGood(session)
-  l = session['ldap']
-  puts "Content-type: text/html\n\n" 
-  puts "Edit information please."
-  puts "This is session "
-  
-  puts "<br/>"
-   puts session.inspect
-  puts "<br/>"
-  puts session.session_id
-  
-  
-  puts "<br/>"
-  # Ideally you read some of this stuff from a cookie
-  a = l.getUserEntry('stahnjd')
-  a.each do | key, value|
-     puts "#{key}: #{value} <br />\n"
-  end
+def findFields(session)
+   config = session['config']
+#   puts "This is config <br/>"
+   options = {}
+   options['fields'] = {}
+   config['UserWritableAttrs'].each do |k, v|
+     options['fields'][k] = v 
+     #puts "Key => #{k} : Value => #{v} <br/>"
+   end
+ #  puts options.inspect()
+   options['entry'] = retrInfo(session, options['fields'])
+   
+   puts "Content-type: text/html\n\n" 
+   pp session
+   renderfarm('manage.erb', options)
+end 
+
+#TODO make sure they are actuall authenticated
+def updateLdap(session, options = {} ) 
+   config = session['config']
+   puts "Content-type: text/html\n\n" 
+   puts "This is options "
+   pp options
+   puts "<br /><br />"
+   puts "Session :" 
+   pp session
+   puts config['LDAPInfo']['BaseDN']
+#   dn = 'uid='+ session['login']+'ou=people,'+config['BaseDN']
+   #session['ldap'].modify(dn, options)
 end
 
-# Login should really be only a router to the next step
-# Index should only call login, if a login isn't already found
 
-#l  = LdapConnection.new()
-#pp l.login(post['login'], post['password'])
-#a = l.getUserEntry(post['login'])
-#a.each do | key, value|
-#   puts "#{key}: #{value} <br />\n"
-#end 
+
+
+def retrInfo(session, fields)
+   # Get LDAP information
+  #puts "Content-type: text/html\n\n" 
+  entry = session['ldap'].getUserEntry(session['login'])
+  data = {}
+  #puts entry.inspect
+  #fields.each do | k, v| 
+  #  puts "Need value for #{v}<br/>"
+  #  puts entry[v] 
+  #end
+  return entry
+end
+
+def renderGood(session)
+  l = session['ldap']
+  a = l.getUserEntry('stahnjd')
+  findFields(session)
+end
