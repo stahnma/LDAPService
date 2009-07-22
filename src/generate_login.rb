@@ -46,8 +46,8 @@ def renderfarm(erbfile = 'login.erb', options = {})
   output = header(config, options)
   output += content(config, erbfile, options)
   output += footer(config, options)
-  puts "Content-type: text/html\n\n" 
-  puts output
+  #puts "Content-type: text/html\n\n" 
+  return output
 end
 
 def login(username, password)
@@ -78,21 +78,21 @@ def findFields(session)
  #  puts options.inspect()
    options['entry'] = retrInfo(session, options['fields'])
    
-   puts "Content-type: text/html\n\n" 
-   pp session
-   renderfarm('manage.erb', options)
+   #puts "Content-type: text/html\n\n" 
+   #pp session
+   return renderfarm('manage.erb', options)
 end 
 
 #TODO make sure they are actuall authenticated
 def updateLdap(session, options = {} ) 
    config = session['config']
-   puts "Content-type: text/html\n\n" 
-   puts "This is options "
-   pp options
-   puts "<br /><br />"
-   puts "Session :" 
-   pp session
-   puts config['LDAPInfo']['BaseDN']
+  # puts "Content-type: text/html\n\n" 
+  # puts "This is options "
+  # pp options
+  # puts "<br /><br />"
+  # puts "Session :" 
+  # pp session
+  # puts config['LDAPInfo']['BaseDN']
 #   dn = 'uid='+ session['login']+'ou=people,'+config['BaseDN']
    #session['ldap'].modify(dn, options)
 end
