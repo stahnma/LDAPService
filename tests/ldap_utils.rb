@@ -30,7 +30,7 @@ class LdapConnection
 
    def getUsers()
      @bound.search(@ldapconf['BaseDN'], LDAP::LDAP_SCOPE_SUBTREE, "(uid=*)") do |user|
-       puts user.inspect
+       return user
      end
    end
   

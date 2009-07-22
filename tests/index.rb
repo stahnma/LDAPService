@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-#
 
 require 'utils'
 require 'ldap_utils'
@@ -7,34 +6,17 @@ require 'generate_login'
 require 'pp'
 require 'cgi'
 require 'cgi/session'
-require 'cgi/session/pstore'
 
 cgi = CGI.new("html4")
 config = loadConfig('../config2.yaml')
-puts "Content-Type: text/html\n\n"
-COOKIE_NAME='lds_session'
-cookie = cgi.cookies[COOKIE_NAME]
-pp cookie
-if cookie.empty?
-  puts "New session, new cookie <br/>"
+#puts "Content-Type: text/html\n\n"
   session = CGI::Session.new(cgi, 'new_session' => true)
-  pp session
-  cookie = CGI::Cookie.new("name" => 'lds', 
-                            "values" => session.session_id,  
-                            "expires" => Time.local(Time.now.year + 2, Time.now.mon, Time.now.day, 
-                                                    Time.now.hour, Time.now.min, Time.now.sec) )
-  cgi.header("cookie" => cookie)
-else
-  puts "Found cookie, or session"
-  session = CGI::Session.new(cgi, 'session_id' => 'thingireadfromcookie' , 'new_session' => false)
-end
+#  pp session
+#  session = CGI::Session.new(cgi,  'new_session' => false)
 session['config'] = config
-puts "<br/><br />Cookie Info <br />"
-puts cookie.to_s
-puts "<br><br>"
-cgi.out("cookie" => cookie) {'blah'}
-exit 0
 
+#TODO make a session broker
+#TODO fix session dumping in /tmp
 
 if not cgi.has_key?('action') 
   renderfarm()
@@ -45,14 +27,15 @@ elsif cgi.params['action'].to_s == 'login'
      renderGood(session)
   end
 elsif cgi.params['action'].to_s == 'update'
-  puts "Content-Type: text/html\n\n"
-  puts "Action is update."
-  puts cgi.params
+  #puts "Content-Type: text/html\n\n"
+  #puts "Action is update."
+  #puts cgi.params
   updateLdap(session, cgi.params)
 else
   #TODO Make error page
-  puts "Content-Type: text/html\n\n"
-  puts "Put error page here."
-  
+  #puts "Content-Type: text/html\n\n"
+  #puts "Put error page here."
+  markup += '<b> Fell to default</b><br/> ' 
 end
-session.close
+
+#TODO make a render engine class or callout

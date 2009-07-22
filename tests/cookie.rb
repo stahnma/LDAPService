@@ -5,7 +5,7 @@ require 'cgi'
 require 'pp'
 require 'cgi/session'
 cgi = CGI.new
-values = cgi.cookies[COOKIE_NAME]
+#values = cgi.cookies[COOKIE_NAME]
 #puts "Content-type: text/html\n\n"
 #puts "This is values #{values}"
 
@@ -13,6 +13,7 @@ values = cgi.cookies[COOKIE_NAME]
 
 if values.empty?
   msg = "New cookie time"
+  session_cook = ""
 else
   msg = "Old cookie time<br/>"
   session_cook = values[1]
@@ -23,6 +24,7 @@ cookie = CGI::Cookie.new("name" => "preference name",
                                 "expires" => Time.local(Time.now.year + 2,
     Time.now.mon, Time.now.day, Time.now.hour, Time.now.min, Time.now.sec) )
 cookie.expires = Time.now + 30*24*3600
+msg +=session_cook
 cgi.out("cookie" => cookie) { msg } 
-puts session_cook
+msg +=session_cook
 
