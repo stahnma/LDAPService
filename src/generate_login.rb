@@ -18,7 +18,7 @@ end
 # Pass a header param set
 def header(config, options)
   errors = options[:errors]
-  template = get_file_as_string("views/header.erb")
+  template = get_file_as_string("../views/header.erb")
   message = ERB.new(template, 0, "-")
   output = message.result(binding)
   return output
@@ -26,7 +26,7 @@ end
 
 # Footer
 def footer(config, options)
-  template = get_file_as_string("views/footer.erb")
+  template = get_file_as_string("../views/footer.erb")
   message = ERB.new(template, 0, "-")
   output = message.result(binding)
   return output
@@ -34,7 +34,7 @@ end
 
 # Content
 def content(config, contentfile, options)
-  template = get_file_as_string("views/" + contentfile)
+  template = get_file_as_string("../views/" + contentfile)
   message = ERB.new(template, 0, "-")
   output = message.result(binding)
   return output
