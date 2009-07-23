@@ -39,8 +39,10 @@ class LdapConnection
      end
    end
 
-   def update()
+   def update(dn, options)
+     return @bound.modify(dn, options)
    end
+
 end
 
 #TODO handle if password is not defined in either spot

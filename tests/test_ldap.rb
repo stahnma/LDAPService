@@ -39,4 +39,13 @@ class TC_ldapTest < Test::Unit::TestCase
       l.login(USERNAME, '')
     }
   end
+  
+  # kind of dumb test right now
+  def testUpdate()
+    l = LdapConnection.new()
+    l.login(USERNAME, ENV['LDAP_PASSWORD'])
+    options = {}
+    options['telephonenumber'] = ['+1 555 555 5555']
+    l.update('uid='+USERNAME+',ou=people,'+@config['LDAPInfo']['BaseDN'], options)
+  end
 end

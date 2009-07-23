@@ -78,18 +78,27 @@ def findFields(session)
    return renderfarm('manage.erb', options)
 end 
 
-#TODO make sure they are actuall authenticated
+#TODO make sure they are actually authenticated
 def updateLdap(session, options = {} ) 
-   config = session['config']
-  # puts "Content-type: text/html\n\n" 
-  # puts "This is options "
-  # pp options
-  # puts "<br /><br />"
-  # puts "Session :" 
-  # pp session
-  # puts config['LDAPInfo']['BaseDN']
-#   dn = 'uid='+ session['login']+'ou=people,'+config['BaseDN']
-   #session['ldap'].modify(dn, options)
+  config = session['config']
+  dn = 'uid='+ session['login'] + ',ou=people,' + config['LDAPInfo']['BaseDN']
+  
+  #  Remove the action attribute from the options hash
+  options.delete('action')
+#  return session['ldap'].inspect
+ # l = LdapConnection.new
+ # l.login('stahnma', 'pie314')
+  l = session['ldap']
+#  if session['ldap'].bound
+#    return 'yes'
+#  else
+#    return 'no'
+#  end
+#  l.login('stahnma', 'pie314')
+#  l.update(dn, options)
+#
+  l.update(dn, options)
+   return l.getUserEntry('stahnma')
 end
 
 
