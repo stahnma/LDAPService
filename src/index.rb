@@ -9,7 +9,7 @@ require 'cgi/session'
 
 markup=""
 cgi = CGI.new("html4")
-config = loadConfig('../config2.yaml')
+config = loadConfig('../configuration.yaml')
   session = CGI::Session.new(cgi, 'new_session' => true)
 session['config'] = config
 
