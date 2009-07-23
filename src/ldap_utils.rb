@@ -18,7 +18,6 @@ class LdapConnection
      if pw.nil? or pw == ''
        raise LDAP::ResultError, "Invalid User/Password combination", caller
      end
-        
      begin
        @bound = @conn.bind(dn,  pw) 
      rescue LDAP::ResultError

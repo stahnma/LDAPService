@@ -53,17 +53,10 @@ end
 
 def login(username, password)
   l  = LdapConnection.new()
-  # Handle case where password is null
   begin 
     l.login(username, password)
   rescue LDAP::ResultError => boom
-    #raise LDAP::ResultError, "Invalid User/Password combination", caller
-    #puts "Send back to #{ENV['HTTP_REFERER']} with an error message in the message box"
-   # puts "Content-type: text/html\n\n"
-   # puts "Fail whale"
-   raise LDAP::ResultError, "Invalid User/Password combination", caller
-
-   #return renderfarm( 'login.erb' , { :errors => "Invalid Login/Password Combination" } )
+    raise LDAP::ResultError, "Invalid User/Password combination", caller
   end
   return l
 end

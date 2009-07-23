@@ -2,7 +2,7 @@
 
 require 'yaml'
 require 'test/unit'
-require 'utils'
+require '../src/utils'
 
 class TC_yamlTest < Test::Unit::TestCase
 #  def setup 
