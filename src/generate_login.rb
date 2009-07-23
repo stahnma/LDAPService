@@ -6,6 +6,13 @@ require 'utils'
 require 'cgi'
 require 'cgi/session'
 
+def activeSession(session)
+  return !(session['login'].nil?)
+end
+
+def renderEngine(session, options)
+   findFields(session,options)
+end
 
 def get_file_as_string(filename)
   data = ''
@@ -62,21 +69,15 @@ def login(username, password)
 end
 
 def findFields(session, options = {})
+  # puts "Content-Type: text/html\n\n"
    config = session['config']
-#   puts "This is config <br/>"
-   if not options.defined?
-     options = {}
-   end
-   options['fields'] = {}
+   #options['fields'] = {}
+  # puts "This is options |#{options}|"
+  # pp config
    config['UserWritableAttrs'].each do |k, v|
      options['fields'][k] = v 
-     #puts "Key => #{k} : Value => #{v} <br/>"
    end
- #  puts options.inspect()
    options['entry'] = retrInfo(session, options['fields'])
-   
-   #puts "Content-type: text/html\n\n" 
-   #pp session
    return renderfarm('manage.erb', options)
 end 
 

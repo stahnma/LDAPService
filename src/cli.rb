@@ -3,7 +3,6 @@
 #
 require 'ldap_utils'
 require 'utils'
-require 'controller'
 require 'generate_login'
 
 user=ENV['USER']

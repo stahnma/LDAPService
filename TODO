@@ -10,3 +10,12 @@ Almost everything
 * mail token
 * Have a malicious user test
 * Write input sanitation routines
+
+
+#TODO make a session broker
+#TODO fix session dumping in /tmp
+#TODO Make error page
+#TODO - make a logout method
+
+
+
