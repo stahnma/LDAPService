@@ -18,3 +18,8 @@
     <%=  errors %>
   </div>
 <% end -%>
+<% if not options[:notice].nil? -%>
+  <div id="noticeExplanation">
+    <%=  options[:notice] %>
+  </div>
+<% end -%>

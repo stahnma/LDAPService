@@ -61,10 +61,12 @@ def login(username, password)
   return l
 end
 
-def findFields(session)
+def findFields(session, options = {})
    config = session['config']
 #   puts "This is config <br/>"
-   options = {}
+   if not options.defined?
+     options = {}
+   end
    options['fields'] = {}
    config['UserWritableAttrs'].each do |k, v|
      options['fields'][k] = v 
@@ -81,24 +83,16 @@ end
 #TODO make sure they are actually authenticated
 def updateLdap(session, options = {} ) 
   config = session['config']
-  dn = 'uid='+ session['login'] + ',ou=people,' + config['LDAPInfo']['BaseDN']
-  
-  #  Remove the action attribute from the options hash
   options.delete('action')
-#  return session['ldap'].inspect
- # l = LdapConnection.new
- # l.login('stahnma', 'pie314')
-  l = session['ldap']
-#  if session['ldap'].bound
-#    return 'yes'
-#  else
-#    return 'no'
-#  end
-#  l.login('stahnma', 'pie314')
-#  l.update(dn, options)
-#
-  l.update(dn, options)
-   return l.getUserEntry('stahnma')
+  options.each do | k , v|
+    if v.to_s.size.to_i < 1
+       options[k] = [ ] 
+    end
+  end
+  l = LdapConnection.new
+  l.login(session['login'], session['password'])
+  return l.update(session['login'], options)
+  # return l.getUserEntry('stahnma')
 end
 
 
@@ -117,8 +111,6 @@ def retrInfo(session, fields)
   return entry
 end
 
-def renderGood(session)
-  l = session['ldap']
-  a = l.getUserEntry('stahnjd')
-  findFields(session)
+def renderGood(session, options = {})
+  findFields(session, options )
 end

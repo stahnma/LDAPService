@@ -39,8 +39,14 @@ class LdapConnection
      end
    end
 
-   def update(dn, options)
+   def update(user, options)
+     dn = 'uid=' + user + ',ou=people,' + @ldapconf['BaseDN']
+     # if update doesn't contain a dn, perhaps build it?
      return @bound.modify(dn, options)
+   end
+
+   def bound?()
+     return @bound.bound?
    end
 
 end

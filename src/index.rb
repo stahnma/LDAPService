@@ -18,12 +18,13 @@ session['config'] = config
 #TODO fix session dumping in /tmp
 
   #   markup += "TEsting session: #{session['login']}"
-if not cgi.has_key?('action') 
+if not cgi.has_key?('action') and not session['login'].defined?
   markup += renderfarm()
 elsif cgi.params['action'].to_s == 'login'
   begin 
     session['ldap']  = login(cgi['login'], cgi['password']) 
-    #session['login'] = cgi['login'].to_s
+    session['login'] = cgi['login'].to_s
+    session['password'] = cgi['password'].to_s
   rescue  LDAP::ResultError
      options = {:errors => "Invalid Login/Password Combination"}
      markup += renderfarm('login.erb', options)
@@ -33,20 +34,19 @@ elsif cgi.params['action'].to_s == 'login'
      markup += renderGood(session)
   end
 elsif cgi.params['action'].to_s == 'update'
-  markup += "TEsting session: #{session['login']}"
-  markup += "Session ldap session is #{session['ldap'].inspect}"
-  markup += "Passing #{cgi.params.inspect}<br/><br/>"
-  markup += updateLdap(session, cgi.params).to_s
-  #   markup += "Update LDAP"
-  #else 
-  #   markup += "FAIL WHALE"
-  #end
+  if updateLdap(session, cgi.params).to_s
+     options = {:notice => "Account Updated Sucessfully."}
+     markup += renderGood(session, options)
+     #markup += renderfarm('manage.erb', options)
+  end
 else
   #TODO Make error page
   markup += '<b> Fell to default</b><br/> ' 
 end
 
+#markup += "Missed the if"
 #TODO make a render engine class or callout
+# Call render here only after all options are decided upon
 cgi.out{ 
    markup
 }
