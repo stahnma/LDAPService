@@ -16,14 +16,14 @@ $session = CGI::Session.new(cgi)
 $session['config'] = config
 
 
-def streamLogin(cgi)
+def streamLogin(session, cgi)
  stream = " "
  options = {}
  if cgi.params['action'].to_s == 'login'
     begin
-      $session['ldap']  = login(cgi['login'], cgi['password'])
-      $session['login'] = cgi['login'].to_s
-      $session['password'] = cgi['password'].to_s
+      session['ldap']  = login(cgi['login'], cgi['password'])
+      session['login'] = cgi['login'].to_s
+      session['password'] = cgi['password'].to_s
     rescue  LDAP::ResultError
        options = {:errors => "Invalid Login/Password Combination"}
        stream += renderfarm('login.erb', options)
@@ -32,30 +32,31 @@ def streamLogin(cgi)
   return stream.to_s
 end
 
-if activeSession($session)
+def selfManage(session, cgi)
   # retreive user writable fields
   options = manageUser($session)
   if cgi.params['action'].to_s == 'update'
       # options needs to be an array
       if updateLdap($session, cgi.params)
-         a = 'q'
+         sleep 1
          options[:notice] = "Account Updated Sucessfully."
-          #stream += renderfarm('manage.erb', options)
-          # now show updated with notice
+      else
+         options[:error] = "Failed to update your account."
       end
-  #stream += renderfarm('manage.erb', options)
   end
-  stream += renderfarm('manage.erb', options)
+  stream = renderfarm('manage.erb', options)
+  return stream
+end
+
+# see if this is a good session
+stream += streamLogin($session, cgi)
+if activeSession($session)
+  # Show management screen
+  stream += selfManage($session, cgi) 
 elsif cgi.params['action'].to_s != 'login'
   # need to login
   stream += renderfarm('login.erb')
-else
-  stream += streamLogin(cgi)
-  if activeSession($session)
-    stream += "manage2"
-  end
 end
-#stream += cgi.params.inspect
 cgi.html{
   cgi.out{ stream } 
 }
