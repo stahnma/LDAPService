@@ -28,12 +28,12 @@ elsif cgi.params['action'].to_s == 'login'
   end
   session['login'] = cgi['login'].to_s
   if (session['ldap'])
-     markup += renderGood(session)
+     markup += manageUser(session)
   end
 elsif cgi.params['action'].to_s == 'update'
   if updateLdap(session, cgi.params).to_s
      options = {:notice => "Account Updated Sucessfully."}
-     markup += renderGood(session, options)
+     markup += manageUser(session, options)
      #markup += renderfarm('manage.erb', options)
   end
 else

@@ -23,41 +23,6 @@ def get_file_as_string(filename)
   return data
 end
 
-# Pass a header param set
-def header(config, options)
-  errors = options[:errors]
-  template = get_file_as_string("../views/header.erb")
-  message = ERB.new(template, 0, "-")
-  output = message.result(binding)
-  return output.to_s
-end
-
-# Footer
-def footer(config, options)
-  template = get_file_as_string("../views/footer.erb")
-  message = ERB.new(template, 0, "-")
-  output = message.result(binding)
-  return output
-end
-
-# Content
-def content(config, contentfile, options)
-  template = get_file_as_string("../views/" + contentfile)
-  message = ERB.new(template, 0, "-")
-  output = message.result(binding)
-  return output
-end
-
-#renderfarm
-def renderfarm(erbfile = 'login.erb', options = {})
-  config = loadConfig('../configuration.yaml')
-  output = header(config, options)
-  output += content(config, erbfile, options)
-  output += footer(config, options)
-  #puts "Content-type: text/html\n\n" 
-  return output
-end
-
 def login(username, password)
   l  = LdapConnection.new()
   begin 
@@ -68,17 +33,19 @@ def login(username, password)
   return l
 end
 
-def findFields(session, options = {})
-  # puts "Content-Type: text/html\n\n"
-   config = session['config']
-   #options['fields'] = {}
-  # puts "This is options |#{options}|"
-  # pp config
+def manageUser(session, options = {})
+   begin
+      config = session['config']
+   rescue NoMethodError => boom
+      raise LDAP::ResultError, "Unable to read $session", caller
+   end
+   options['fields'] = {}
    config['UserWritableAttrs'].each do |k, v|
      options['fields'][k] = v 
    end
    options['entry'] = retrInfo(session, options['fields'])
-   return renderfarm('manage.erb', options)
+   return options
+#   return renderfarm('manage.erb', options)
 end 
 
 #TODO make sure they are actually authenticated
@@ -96,22 +63,9 @@ def updateLdap(session, options = {} )
   # return l.getUserEntry('stahnma')
 end
 
-
-
-
 def retrInfo(session, fields)
-   # Get LDAP information
-  #puts "Content-type: text/html\n\n" 
-  entry = session['ldap'].getUserEntry(session['login'])
-  data = {}
-  #puts entry.inspect
-  #fields.each do | k, v| 
-  #  puts "Need value for #{v}<br/>"
-  #  puts entry[v] 
-  #end
+  l = LdapConnection.new
+  l.login(session['login'], session['password'])
+  entry = l.getUserEntry(session['login'])
   return entry
-end
-
-def renderGood(session, options = {})
-  findFields(session, options )
 end
