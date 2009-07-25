@@ -152,11 +152,17 @@ padding-left: 25px;
   margin-right: auto ;
 }
 
-#forgot {
-/*  width: 500px; */
+#forgot{
   text-align: right;
   font-size: 8pt;
   margin-left: auto ;
+}
+
+#logout {
+  text-align: right;
+  font-size: 8pt;
+  margin-left: auto ;
+}
 /*
 #errorExplanation h2 {
   text-align: left;

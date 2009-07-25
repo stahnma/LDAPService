@@ -16,6 +16,5 @@ Almost everything
 #TODO fix session dumping in /tmp
 #TODO Make error page
 #TODO - make a logout method
-
-
+#TODO trap error if user can't update their own record
 
