@@ -29,6 +29,12 @@ def streamLogin(session, cgi)
        stream += renderfarm('login.erb', options)
     end
   end
+  if cgi.params['action'].to_s == 'logout'
+     session.close
+     session.delete
+     print cgi.header({'Status' => '302 Moved', 'location' =>  '/lds/index.rb'})
+     exit 0
+  end
   return stream.to_s
 end
 
@@ -38,7 +44,6 @@ def selfManage(session, cgi)
   if cgi.params['action'].to_s == 'update'
       # options needs to be an array
       if updateLdap($session, cgi.params)
-         sleep 1
          options[:notice] = "Account Updated Sucessfully."
       else
          options[:error] = "Failed to update your account."
@@ -57,6 +62,7 @@ elsif cgi.params['action'].to_s != 'login'
   # need to login
   stream += renderfarm('login.erb')
 end
+#stream += cgi.inspect
 cgi.html{
   cgi.out{ stream } 
 }
