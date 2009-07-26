@@ -35,6 +35,14 @@ def streamLogin(session, cgi)
      print cgi.header({'Status' => '302 Moved', 'location' =>  '/lds/index.rb'})
      exit 0
   end
+  if cgi.params['action'].to_s == 'forgot'
+     stream += 'forgot pw'
+     # obtain login name
+     # email it to registered account email address
+     # allow old pw to still be used
+     # allow user to reset their pw
+     #
+  end
   return stream.to_s
 end
 
