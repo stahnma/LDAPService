@@ -1,3 +1,12 @@
+Setup
+------
+Right now this expects you check it out in /srv/lds
+Then run 'sudo rake apache'
+
+From there you should be ok.
+
+
+
 
 Just some thoughts
 
