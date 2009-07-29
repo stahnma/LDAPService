@@ -42,7 +42,12 @@ class LdapConnection
    def update(user, options)
      dn = 'uid=' + user + ',ou=people,' + @ldapconf['BaseDN']
      # if update doesn't contain a dn, perhaps build it?
-     return @bound.modify(dn, options)
+     begin 
+       return @bound.modify(dn, options)
+     rescue LDAP::ResultError
+       raise LDAP::ResultError, "Insufficient Access to Modify Attributes", caller 
+     return false
+     end
    end
 
    def bound?()

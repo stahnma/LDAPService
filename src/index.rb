@@ -51,10 +51,11 @@ def selfManage(session, cgi)
   options = manageUser($session)
   if cgi.params['action'].to_s == 'update'
       # options needs to be an array
-      if updateLdap($session, cgi.params)
+      begin
+          updateLdap($session, cgi.params)
          options[:notice] = "Account Updated Sucessfully."
-      else
-         options[:error] = "Failed to update your account."
+      rescue LDAP::ResultError
+         options[:errors] = "Insufficient Access to Update Attributes."
       end
   end
   stream = renderfarm('manage.erb', options)

@@ -60,6 +60,7 @@ def updateLdap(session, options = {} )
   l = LdapConnection.new
   l.login(session['login'], session['password'])
   return l.update(session['login'], options)
+   
   # return l.getUserEntry('stahnma')
 end
 
