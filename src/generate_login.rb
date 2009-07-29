@@ -23,6 +23,18 @@ def get_file_as_string(filename)
   return data
 end
 
+def logout(session)
+     begin 
+       session.close
+       session.delete
+     rescue 
+        # nothing? 
+     end  
+       print cgi.header({'Status' => '302 Moved', 'location' =>  '/lds/index.rb'})
+     exit 0
+end
+
+
 def login(username, password)
   l  = LdapConnection.new()
   begin 
@@ -48,7 +60,7 @@ def manageUser(session, options = {})
 #   return renderfarm('manage.erb', options)
 end 
 
-#TODO make sure they are actually authenticated
+#TODO test to make sure they are actually authenticated
 def updateLdap(session, options = {} ) 
   config = session['config']
   options.delete('action')
@@ -57,11 +69,32 @@ def updateLdap(session, options = {} )
        options[k] = [ ] 
     end
   end
+  # Now handle the userPassword stuff
+  if options['userPassword'].length < 1
+     options.delete('userPassword')
+  elsif options['userPassword'] != options['confirmPassword']
+     raise ArgumentError, "Passwords do not match.", caller
+  else
+     # Remove the confirmation if it matched properly
+     options.delete('confirmPassword')
+  end
+  
   l = LdapConnection.new
   l.login(session['login'], session['password'])
-  return l.update(session['login'], options)
-   
-  # return l.getUserEntry('stahnma')
+  result =  l.update(session['login'], options)
+  varbug(result)
+  if result and options['userPassword'].length > 1
+       varbug "Inside if"
+       session.close
+       session.delete
+       exit 0
+  end
+  return result
+end
+
+
+def varbug(var)
+   File.open('/tmp/foo', 'w') {|f| f.write("The value for this variable is #{var}\n") }
 end
 
 def retrInfo(session, fields)

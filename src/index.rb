@@ -15,7 +15,6 @@ cgi = CGI.new("html4")
 $session = CGI::Session.new(cgi)
 $session['config'] = config
 
-
 def streamLogin(session, cgi)
  stream = " "
  options = {}
@@ -30,10 +29,7 @@ def streamLogin(session, cgi)
     end
   end
   if cgi.params['action'].to_s == 'logout'
-     session.close
-     session.delete
-     print cgi.header({'Status' => '302 Moved', 'location' =>  '/lds/index.rb'})
-     exit 0
+     logout(session)
   end
   if cgi.params['action'].to_s == 'forgot'
      stream += 'forgot pw'
@@ -52,7 +48,7 @@ def selfManage(session, cgi)
   if cgi.params['action'].to_s == 'update'
       # options needs to be an array
       begin
-          updateLdap($session, cgi.params)
+         updateLdap($session, cgi.params)
          options[:notice] = "Account Updated Sucessfully."
       rescue LDAP::ResultError
          options[:errors] = "Insufficient Access to Update Attributes."
