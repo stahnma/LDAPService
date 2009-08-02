@@ -10,18 +10,22 @@ class LdapConnection
    def initialize()
      config = loadConfig('../configuration.yaml')
      @ldapconf = config['LDAPInfo']
-     @conn = LDAP::Conn.new(@ldapconf['Host']) 
+     begin
+       @conn = LDAP::Conn.new(@ldapconf['Host']) 
+     rescue LDAP::ResultError
+       raise LDAP::ResultError, "Error Connecting to LDAP Server", caller
+     end
    end
    
    def login(user, pw)
      dn = 'uid=' + user + ',ou=people,' + @ldapconf['BaseDN']
      if pw.nil? or pw == ''
-       raise LDAP::ResultError, "Invalid User/Password combination", caller
+       raise LDAP::ResultError, "Password is blank", caller
      end
      begin
        @bound = @conn.bind(dn,  pw) 
-     rescue LDAP::ResultError
-       raise LDAP::ResultError, "Invalid User/Password combination", caller
+     rescue LDAP::ResultError => boom
+       raise LDAP::ResultError, boom, caller
        return false
      end
      return true

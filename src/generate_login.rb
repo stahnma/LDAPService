@@ -23,7 +23,7 @@ def get_file_as_string(filename)
   return data
 end
 
-def logout(session)
+def logout(session, cgi)
      begin 
        session.close
        session.delete
@@ -40,7 +40,7 @@ def login(username, password)
   begin 
     l.login(username, password)
   rescue LDAP::ResultError => boom
-    raise LDAP::ResultError, "Invalid User/Password combination", caller
+    raise LDAP::ResultError, boom.to_s, caller
   end
   return l
 end

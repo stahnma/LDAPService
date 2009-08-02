@@ -23,13 +23,14 @@ def streamLogin(session, cgi)
       session['ldap']  = login(cgi['login'], cgi['password'])
       session['login'] = cgi['login'].to_s
       session['password'] = cgi['password'].to_s
-    rescue  LDAP::ResultError
-       options = {:errors => "Invalid Login/Password Combination"}
+    rescue  LDAP::ResultError => boom
+       #options = {:errors => "Invalid Login/Password Combination"}
+       options = {:errors => boom}
        stream += renderfarm('login.erb', options)
     end
   end
   if cgi.params['action'].to_s == 'logout'
-     logout(session)
+     logout(session, cgi)
   end
   if cgi.params['action'].to_s == 'forgot'
      stream += 'forgot pw'
