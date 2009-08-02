@@ -1,8 +1,8 @@
 Almost everything
 
 
-* See if you can combine erb templates for less editing.  I think you can.
-* Write the back end 
+x * See if you can combine erb templates for less editing.  I think you can.
+x * Write the back end 
 * Validate against the directory
 * Self-service update
 * SSH Key
@@ -12,21 +12,23 @@ Almost everything
 * Write input sanitation routines
 
 
-X #TODO make a session broker
+x #TODO make a session broker
 #TODO fix session dumping in /tmp
 #TODO Make error page
-X #TODO - make a logout method
-X #TODO trap error if user can't update their own record
+x #TODO - make a logout method
+x #TODO trap error if user can't update their own record
 #TODO - make logout method not be hard-coded to /lds/index.rb
-#TODO - Make account update page show updated data
-#TODO - Handle password confirmation logic
-#TODO - if password left blank, don't attempt update it
+x #TODO - Make account update page show updated data
+x #TODO - Handle password confirmation logic
+x #TODO - if password left blank, don't attempt update it
+#TODO - when updating password, handle next actions, like logout 
+#TODO - write tests for nearly everything :(
 
 
 Broken
 -----
-* Nearly everything having to do with passwords still
+x * Nearly everything having to do with passwords still
 * When you update, it should make you login again
-* Validate 1 and 2 are same, if not error
-* Ensure a whitespace or nonexistant password does nothing
+x * Validate 1 and 2 are same, if not error
+x * Ensure a whitespace or nonexistant password does nothing
 
