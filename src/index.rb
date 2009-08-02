@@ -51,8 +51,8 @@ def selfManage(session, cgi)
       begin
          updateLdap($session, cgi.params)
          options[:notice] = "Account Updated Sucessfully."
-      rescue LDAP::ResultError
-         options[:errors] = "Insufficient Access to Update Attributes."
+      rescue LDAP::ResultError, ArgumentError => boom
+         options[:errors] = boom.to_s
       end
   end
   stream = renderfarm('manage.erb', options)

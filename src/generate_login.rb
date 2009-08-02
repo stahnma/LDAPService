@@ -72,8 +72,10 @@ def updateLdap(session, options = {} )
   # Now handle the userPassword stuff
   if options['userPassword'].length < 1
      options.delete('userPassword')
+     options.delete('confirmPassword')
   elsif options['userPassword'] != options['confirmPassword']
      raise ArgumentError, "Passwords do not match.", caller
+     return  false
   else
      # Remove the confirmation if it matched properly
      options.delete('confirmPassword')
@@ -84,7 +86,6 @@ def updateLdap(session, options = {} )
   result =  l.update(session['login'], options)
   varbug(result)
   if result and options['userPassword'].length > 1
-       varbug "Inside if"
        session.close
        session.delete
        exit 0
@@ -94,7 +95,7 @@ end
 
 
 def varbug(var)
-   File.open('/tmp/foo', 'w') {|f| f.write("The value for this variable is #{var}\n") }
+   File.open('/tmp/foo', 'w+') {|f| f.write("The value for this variable is #{var}\n") }
 end
 
 def retrInfo(session, fields)

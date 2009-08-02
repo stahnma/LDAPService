@@ -48,8 +48,8 @@ class LdapConnection
      # if update doesn't contain a dn, perhaps build it?
      begin 
        return @bound.modify(dn, options)
-     rescue LDAP::ResultError
-       raise LDAP::ResultError, "Insufficient Access to Modify Attributes", caller 
+     rescue LDAP::ResultError => boom
+       raise LDAP::ResultError, boom.to_s, caller 
      return false
      end
    end
