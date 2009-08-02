@@ -50,6 +50,7 @@ def selfManage(session, cgi)
       # options needs to be an array
       begin
          updateLdap($session, cgi.params)
+         options = manageUser($session)
          options[:notice] = "Account Updated Sucessfully."
       rescue LDAP::ResultError, ArgumentError => boom
          options[:errors] = boom.to_s
