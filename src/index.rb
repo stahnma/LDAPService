@@ -15,14 +15,14 @@ cgi = CGI.new("html4")
 $session = CGI::Session.new(cgi)
 $session['config'] = config
 
-def streamLogin(session, cgi)
+def streamLogin(cgi)
  stream = " "
  options = {}
  if cgi.params['action'].to_s == 'login'
     begin
-      session['ldap']  = login(cgi['login'], cgi['password'])
-      session['login'] = cgi['login'].to_s
-      session['password'] = cgi['password'].to_s
+      $session['ldap']  = login(cgi['login'], cgi['password'])
+      $session['login'] = cgi['login'].to_s
+      $session['password'] = cgi['password'].to_s
     rescue  LDAP::ResultError => boom
        #options = {:errors => "Invalid Login/Password Combination"}
        options = {:errors => boom}
@@ -30,7 +30,7 @@ def streamLogin(session, cgi)
     end
   end
   if cgi.params['action'].to_s == 'logout'
-     logout(session, cgi)
+     logout(cgi)
   end
   if cgi.params['action'].to_s == 'forgot'
      stream += 'forgot pw'
@@ -43,14 +43,22 @@ def streamLogin(session, cgi)
   return stream.to_s
 end
 
-def selfManage(session, cgi)
+def selfManage(cgi)
   # retreive user writable fields
-  options = manageUser($session)
+  options = manageUser()
   if cgi.params['action'].to_s == 'update'
       # options needs to be an array
       begin
-         updateLdap($session, cgi.params)
-         options = manageUser($session)
+         updateLdap(cgi.params)
+         #if newpw.length() > 3 
+          # rebind and check for errors
+          # $session['ldap']  = login(cgi['login'], newpw.to_s)
+          # $session['login'] = cgi['login'].to_s
+          # $session['password'] = newpw.to_s
+          # options = manageUser()
+          # options[:notice] = "Account and Password Updated Sucessfully."
+         #end
+         options = manageUser()
          options[:notice] = "Account Updated Sucessfully."
       rescue LDAP::ResultError, ArgumentError => boom
          options[:errors] = boom.to_s
@@ -61,10 +69,10 @@ def selfManage(session, cgi)
 end
 
 # see if this is a good session
-stream += streamLogin($session, cgi)
-if activeSession($session)
+stream += streamLogin(cgi)
+if activeSession()
   # Show management screen
-  stream += selfManage($session, cgi) 
+  stream += selfManage(cgi) 
 elsif cgi.params['action'].to_s != 'login'
   # need to login
   stream += renderfarm('login.erb')

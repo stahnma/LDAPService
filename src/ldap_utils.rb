@@ -54,6 +54,9 @@ class LdapConnection
      end
    end
 
+   def unbind()
+     return @bound.unbind
+   end
    def bound?()
      return @bound.bound?
    end
