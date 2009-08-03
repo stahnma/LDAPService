@@ -6,6 +6,7 @@ require './../src/ldap_utils'
 require './../src/utils'    
 
 USERNAME='stahnma'
+VALIDEMAIL='mastahnke@gmail.com'
 
 class TC_ldapTest < Test::Unit::TestCase
   def setup                            
@@ -59,7 +60,7 @@ class TC_ldapTest < Test::Unit::TestCase
     dn="uid=#{USERNAME},ou=people,"+ @config['LDAPInfo']['BaseDN']
     @l.login(dn, ENV['LDAP_PASSWORD'])
     a = @l.getUserEntry('stahnma')
-    assert ( a['mail'][0].downcase == 'michael.stahnke@cat.com' ) 
+    assert ( a['mail'][0].downcase == VALIDEMAIL ) 
   end
 
   def test_getUserEntry_invalid

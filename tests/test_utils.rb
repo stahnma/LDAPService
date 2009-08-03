@@ -5,6 +5,7 @@ require 'test/unit'
 require 'generate_login'
 #require './../src/ldap_utils'
 #require './../src/utils'    
+VALIDEMAIL='mastahnke@gmail.com'
 
 class TC_eolTest < Test::Unit::TestCase
   def test_emailOrLogin_uid_pass
@@ -25,8 +26,8 @@ end
 
 class TC_Test < Test::Unit::TestCase
   def test_lookup_valid_email 
-     a = lookup('michael.stahnke@cat.com', 'mail') 
-     assert(a.downcase == 'michael.stahnke@cat.com')
+     a = lookup(VALIDEMAIL, 'mail') 
+     assert(a.downcase == VALIDEMAIL)
   end
 
   def test_lookup_invalid_email
@@ -37,7 +38,7 @@ class TC_Test < Test::Unit::TestCase
 
   def test_lookup_valid_uid
      a = lookup('stahnma', 'uid') 
-     assert(a.downcase == 'michael.stahnke@cat.com')
+     assert(a.downcase == VALIDEMAIL)
   end
   def test_lookup_invalid_uid
      assert_raise( LDAP::ResultError ) {

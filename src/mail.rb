@@ -23,4 +23,4 @@ EOF
 end
 
 
-sendmail('mike@whatever.com', 'michael.stahnke@cat.com', 'whatever', 'message body' , { :from_alias => 'mikealias' , :to_alias => "jojo"}  ) 
+sendmail('mike@whatever.com', 'mastahnke@gmail.com', 'whatever', 'message body' , { :from_alias => 'mikealias' , :to_alias => "jojo"}  ) 
