@@ -106,3 +106,21 @@ def retrInfo( fields)
   entry = l.getUserEntry($session['login'])
   return entry
 end
+
+def adminBind()
+  #config = $session['config']
+  config = loadConfig('../configuration.yaml')
+  l  = LdapConnection.new
+#  pp config
+  l.login(config['LDAPInfo']['BindDN'], config['LDAPInfo']['BindPW'])
+end
+
+def emailOrLogin()
+end
+
+def lookup()
+end
+
+def sendmail()
+end
+
