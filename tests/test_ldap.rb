@@ -10,7 +10,6 @@ USERNAME='stahnma'
 class TC_ldapTest < Test::Unit::TestCase
   def setup                            
     @config = loadConfig('../configuration.yaml')
-    
   end                                  
 #  #  def teardown                         
 #  #  end   
@@ -48,4 +47,12 @@ class TC_ldapTest < Test::Unit::TestCase
     options['telephonenumber'] = ['+1 555 555 5555']
     l.update('uid='+USERNAME+',ou=people,'+@config['LDAPInfo']['BaseDN'], options)
   end
+
+  def testDN()
+    dn="uid=#{USERNAME},ou=people,"+ @config['LDAPInfo']['BaseDN']
+    l = LdapConnection.new()
+    l.login(dn, ENV['LDAP_PASSWORD'])
+  end
+  
+  
 end
