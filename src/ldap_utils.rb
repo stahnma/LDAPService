@@ -19,13 +19,6 @@ class LdapConnection
   
    def login(user, pw)
      dn = self.getDN(user)
-#     unless user =~ /dc=/ 
-#     #  #TODO fix hard-coded ou=people
-#      dn = 'uid=' + user + ',ou=people,' + @ldapconf['BaseDN']
-#     else
-#       dn = user
-#     end
-
      if pw.nil? or pw == ''
        raise LDAP::ResultError, "Password is blank", caller
      end
@@ -61,8 +54,6 @@ class LdapConnection
 
    def update(user, options)
      dn =  self.getDN(user)
-     #dn = 'uid=' + user + ',ou=people,' + @ldapconf['BaseDN']
-     # if update doesn't contain a dn, perhaps build it?
      begin 
        return @bound.modify(dn, options)
      rescue LDAP::ResultError => boom
