@@ -16,9 +16,16 @@ class LdapConnection
        raise LDAP::ResultError, "Error Connecting to LDAP Server", caller
      end
    end
-   
+  
    def login(user, pw)
-     dn = 'uid=' + user + ',ou=people,' + @ldapconf['BaseDN']
+     dn = self.getDN(user)
+#     unless user =~ /dc=/ 
+#     #  #TODO fix hard-coded ou=people
+#      dn = 'uid=' + user + ',ou=people,' + @ldapconf['BaseDN']
+#     else
+#       dn = user
+#     end
+
      if pw.nil? or pw == ''
        raise LDAP::ResultError, "Password is blank", caller
      end
@@ -44,7 +51,8 @@ class LdapConnection
    end
 
    def update(user, options)
-     dn = 'uid=' + user + ',ou=people,' + @ldapconf['BaseDN']
+     dn =  self.getDN(user)
+     #dn = 'uid=' + user + ',ou=people,' + @ldapconf['BaseDN']
      # if update doesn't contain a dn, perhaps build it?
      begin 
        return @bound.modify(dn, options)
@@ -61,6 +69,15 @@ class LdapConnection
      return @bound.bound?
    end
 
+   def getDN(user)
+     unless user =~ /dc=/ 
+     #  #TODO fix hard-coded ou=people
+      dn = 'uid=' + user + ',ou=people,' + @ldapconf['BaseDN']
+     else
+      dn = user
+     end
+     return dn
+   end
 end
 
 #TODO handle if password is not defined in either spot
@@ -74,25 +91,3 @@ def password_check( yamls )
   end
   return password
 end
-
-#conn = LDAP::Conn.new(yamls['LDAPInfo']['Host'])
-#password = password_check(yamls)
-#conn.bind(yamls['LDAPInfo']['BindDN'],  password) do |bound|
-#  bound.search(yamls['LDAPInfo']['BaseDN'], LDAP::LDAP_SCOPE_SUBTREE, "(uid=*)") do |user|
-  #     puts "Gecos: #{user['gecos']}"
-  #     puts "UID: #{user['uid']}"
-#  end
-#end
-
-# connect to the LDAP directory
-
-# authenticate a user
-# create a session
-# bind as a manager
-
-#l  = LdapConnection.new()
-#puts l.inspect
-#l.login('stahnma', ENV['LDAP_PASSWORD'])
-#l.getUsers()
-#l.getUserEntry('stahnjd')
-#l.connect()
