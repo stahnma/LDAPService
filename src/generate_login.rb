@@ -113,6 +113,7 @@ def adminBind()
   l  = LdapConnection.new
 #  pp config
   l.login(config['LDAPInfo']['BindDN'], config['LDAPInfo']['BindPW'])
+  return l
 end
 
 def emailOrLogin(login)
@@ -127,7 +128,22 @@ def emailOrLogin(login)
   end
 end
 
-def lookup()
+def lookup(value, field)
+  l = adminBind 
+  if field == 'mail'
+    begin
+      entry = l.getEntryByMail(value)
+    rescue LDAP::ResultError => boom
+      raise LDAP::ResultError, boom.to_s, caller
+    end
+  elsif field == 'uid'
+    begin
+      entry = l.getUserEntry(value)
+    rescue LDAP::ResultError => boom
+      raise LDAP::ResultError, boom.to_s, caller
+    end
+  end
+  return entry['mail'][0] 
 end
 
 def sendmail()

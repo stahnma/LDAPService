@@ -10,6 +10,7 @@ USERNAME='stahnma'
 class TC_ldapTest < Test::Unit::TestCase
   def setup                            
     @config = loadConfig('../configuration.yaml')
+    @l = LdapConnection.new()
   end                                  
 #  #  def teardown                         
 #  #  end   
@@ -52,6 +53,21 @@ class TC_ldapTest < Test::Unit::TestCase
     dn="uid=#{USERNAME},ou=people,"+ @config['LDAPInfo']['BaseDN']
     l = LdapConnection.new()
     l.login(dn, ENV['LDAP_PASSWORD'])
+  end
+
+  def test_getUserEntry_valid
+    dn="uid=#{USERNAME},ou=people,"+ @config['LDAPInfo']['BaseDN']
+    @l.login(dn, ENV['LDAP_PASSWORD'])
+    a = @l.getUserEntry('stahnma')
+    assert ( a['mail'][0].downcase == 'michael.stahnke@cat.com' ) 
+  end
+
+  def test_getUserEntry_invalid
+    dn="uid=#{USERNAME},ou=people,"+ @config['LDAPInfo']['BaseDN']
+    @l.login(dn, ENV['LDAP_PASSWORD'])
+    assert_raise( LDAP::ResultError ) {
+      @l.getUserEntry('bogus123')
+    }
   end
   
   

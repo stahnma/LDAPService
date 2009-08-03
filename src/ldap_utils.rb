@@ -38,16 +38,25 @@ class LdapConnection
      return true
    end
 
+   # This seems buggy.  Like it would return one result, even though there are many
    def getUsers()
      @bound.search(@ldapconf['BaseDN'], LDAP::LDAP_SCOPE_SUBTREE, "(uid=*)") do |user|
        return user
      end
+   end
+
+   def getEntryByMail(mail)
+     @bound.search(@ldapconf['BaseDN'], LDAP::LDAP_SCOPE_SUBTREE, "(mail=#{mail})") do |user|
+       return user.to_hash
+     end
+     raise LDAP::ResultError, "No entry with mail #{mail} found", caller
    end
   
    def getUserEntry(uid)
      @bound.search(@ldapconf['BaseDN'], LDAP::LDAP_SCOPE_SUBTREE, "(uid=#{uid})") do |user|
          return user.to_hash
      end
+     raise LDAP::ResultError, "No entry with uid #{uid} found", caller
    end
 
    def update(user, options)
