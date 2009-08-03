@@ -5,10 +5,10 @@ Favicon: favicon.ico
 Logo: logo.png
 AltLogo: LDAP Self Service
 LDAPInfo:
-  Host:  ldap.exmaple.com
-  BaseDN: dc=exmaple,dc=com
+  Host:  ldap.example.com
+  BaseDN: dc=example,dc=com
   # For password resets and such, this is required
-  BindDN: uid=stahnma,ou=people,dc=exmaple,dc=com
+  BindDN: uid=stahnma,ou=people,dc=example,dc=com
   #BindPW: You can put a PW here, or use ENV variable LDAP_PASSWORD
 
 # Note that you must modify ACIs in your LDAP directory to ensure
