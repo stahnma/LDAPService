@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'erb'
+require 'utils'
 
 # Pass a header param set
 def header(config, options)
