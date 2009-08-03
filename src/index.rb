@@ -12,6 +12,7 @@ require 'cgi/session'
 config = loadConfig('../configuration.yaml')
 stream = ""
 cgi = CGI.new("html4")
+options = {} 
 $session = CGI::Session.new(cgi)
 $session['config'] = config
 
@@ -32,14 +33,14 @@ def streamLogin(cgi)
   if cgi.params['action'].to_s == 'logout'
      logout(cgi)
   end
-  if cgi.params['action'].to_s == 'forgot'
-     stream += 'forgot pw'
+#  if cgi.params['action'].to_s == 'forgot'
+#     stream = renderfarm('forgot.erb', options)
      # obtain login name
      # email it to registered account email address
      # allow old pw to still be used
      # allow user to reset their pw
      #
-  end
+#  end
   return stream.to_s
 end
 
@@ -47,17 +48,8 @@ def selfManage(cgi)
   # retreive user writable fields
   options = manageUser()
   if cgi.params['action'].to_s == 'update'
-      # options needs to be an array
       begin
          updateLdap(cgi.params)
-         #if newpw.length() > 3 
-          # rebind and check for errors
-          # $session['ldap']  = login(cgi['login'], newpw.to_s)
-          # $session['login'] = cgi['login'].to_s
-          # $session['password'] = newpw.to_s
-          # options = manageUser()
-          # options[:notice] = "Account and Password Updated Sucessfully."
-         #end
          options = manageUser()
          options[:notice] = "Account Updated Sucessfully."
       rescue LDAP::ResultError, ArgumentError => boom
@@ -70,12 +62,23 @@ end
 
 # see if this is a good session
 stream += streamLogin(cgi)
-if activeSession()
+if activeSession() #and cgi.params['action'].to_s != 'forgot'
   # Show management screen
   stream += selfManage(cgi) 
-elsif cgi.params['action'].to_s != 'login'
+elsif cgi.params['action'].to_s != 'login' and cgi.params['action'].to_s != 'forgot'
   # need to login
   stream += renderfarm('login.erb')
+elsif cgi.params['action'].to_s == 'forgot'
+  if cgi.params['step'].to_s == 'validate'
+     # Do the stuff
+     #  bind as a privileged user
+     #  validate the login
+     #  look for an email address
+     options[:notice] = "Verification email sent."
+     stream += renderfarm('forgot.erb', options)
+  else 
+     stream += renderfarm('forgot.erb')
+  end
 end
 #stream += cgi.inspect
 cgi.html{
