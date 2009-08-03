@@ -115,7 +115,16 @@ def adminBind()
   l.login(config['LDAPInfo']['BindDN'], config['LDAPInfo']['BindPW'])
 end
 
-def emailOrLogin()
+def emailOrLogin(login)
+  if login.chomp.to_s.length < 1
+     return false
+  end
+
+  if login =~ /@/
+    return 'mail'
+  else
+    return 'uid'
+  end
 end
 
 def lookup()
