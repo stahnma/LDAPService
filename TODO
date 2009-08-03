@@ -24,6 +24,8 @@ x #TODO - if password left blank, don't attempt update it
 #TODO - when updating password, handle next actions, like logout 
 #TODO - write tests for nearly everything :(
 TODO - When updating account, handle MMR not replicating yet.
+TODO - Add Plugins to handle accounts being updated kicking off external scripts
+TODO - Add a Login link on  forgot screen 1
 
 
 Broken
