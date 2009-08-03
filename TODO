@@ -23,6 +23,7 @@ x #TODO - Handle password confirmation logic
 x #TODO - if password left blank, don't attempt update it
 #TODO - when updating password, handle next actions, like logout 
 #TODO - write tests for nearly everything :(
+TODO - When updating account, handle MMR not replicating yet.
 
 
 Broken
