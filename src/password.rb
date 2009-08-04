@@ -32,8 +32,12 @@ class PW
      @password.length >= @minLength
   end
  
-  def passwordMatches?(str)
-      str == @password 
+  def ==(str)
+      @password == str
+  end
+
+  def empty?
+     @password.empty?
   end
 
   def strong?
