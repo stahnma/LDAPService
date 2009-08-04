@@ -80,16 +80,10 @@ def updateLdap(options = {} )
        $session['password'] =  options['userPassword'].to_s
        l.unbind()
        $session['ldap'] = l.login($session['login'].to_s, $session['password'].to_s)
-       a = "Inside if"
-       varbug(a)
   end
   return result
 end
 
-
-def varbug(var)
-   File.open('/tmp/foo', 'w+') {|f| f.write("The value for this variable is #{var}\n") }
-end
 
 def retrInfo( fields)
   l = LdapConnection.new
