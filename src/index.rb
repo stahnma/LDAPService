@@ -86,6 +86,12 @@ elsif cgi.params['action'].to_s == 'forgot'
   elsif cgi.params['step'].to_s == 'reset'
      options[:login] = $session['email']
      stream += renderfarm('password_reset.erb', options)
+  elsif cgi.params['step'].to_s == 'adminreset'
+     # Validate a password was Entered
+     # Validate passwords match
+     #
+     stream += "Admin Reset Invoked"
+
   else 
      stream += renderfarm('forgot.erb')
   end
