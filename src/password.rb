@@ -37,7 +37,7 @@ class PW
   end
 
   def strong?
-      self.enoughUppercase? and self.enoughLowercase?  and self.enoughNumeric? and self.enoughSpecialChars? and self.minLength?
+      enoughUppercase? and enoughLowercase? and enoughNumeric? and enoughSpecialChars? and minLength?
   end
   
   private
