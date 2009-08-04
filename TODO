@@ -30,6 +30,7 @@ TODO - Validate the configuration file has all the required fields (perhaps in a
 TODO - Validate on forgot password screen that you entered something
 TODO - Mod_rewrite my stuff
 TODO - Work with SSL only
+TODO - Allow user to login with email address in normal session also
 
 
 
