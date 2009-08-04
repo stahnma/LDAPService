@@ -5,7 +5,7 @@ require 'erb'
 require 'utils'
 require 'presentation'
 
-def sendmail(from, to, subject, message, options = {}) 
+def sendemail(from, to, subject, message, options = {}) 
   #   => from_alias (optional)
   #   =>  to_alias (optional)       
   from = options[:from_alias].to_s  + "<#{from}>"
@@ -48,7 +48,7 @@ def resetMail(to)
   options[:to] = to
   options[:session_uri] = 'http://example.com/reset/52ffa5d718d3fcb210df9ee5f57e79e94b18532a6363e0b0f531db9fa53053c4'
   options[:message] = content(config, 'password_reset_mail.erb', options)
-  sendmail(options[:from], options[:to],  options[:subject], options[:message], options)
+  sendemail(options[:from], options[:to],  options[:subject], options[:message], options)
 end
 
 
