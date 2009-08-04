@@ -7,6 +7,7 @@ require 'presentation'
 require 'pp'
 require 'cgi'
 require 'cgi/session'
+require 'mail'
 
 
 config = loadConfig('../configuration.yaml')
@@ -77,7 +78,8 @@ elsif cgi.params['action'].to_s == 'forgot'
      
      type = emailOrLogin(cgi.params['login'].to_s) 
      begin
-       lookup(cgi.params['login'].to_s, type)
+       email = lookup(cgi.params['login'].to_s, type)
+       resetMail(email)
        options[:notice] = "Verification email sent."
      rescue LDAP::ResultError => boom
        options[:errors] = boom.to_s
