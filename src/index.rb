@@ -71,15 +71,11 @@ elsif cgi.params['action'].to_s != 'login' and cgi.params['action'].to_s != 'for
   stream += renderfarm('login.erb')
 elsif cgi.params['action'].to_s == 'forgot'
   if cgi.params['step'].to_s == 'validate'
-     # Do the stuff
-     #  bind as a privileged user
-     #  validate the login
-     #  look for an email address
-     
      type = emailOrLogin(cgi.params['login'].to_s) 
      begin
-       email = lookup(cgi.params['login'].to_s, type)
-       resetMail(email)
+       email = lookupEmail(cgi.params['login'].to_s, type)
+       #resetMail(email)
+       options[:session_id] = $session.session_id 
        options[:notice] = "Verification email sent."
      rescue LDAP::ResultError => boom
        options[:errors] = boom.to_s
