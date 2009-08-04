@@ -5,6 +5,7 @@ require 'ldap_utils'
 require 'utils'
 require 'cgi'
 require 'cgi/session'
+require 'password'
 
 def activeSession()
   return !($session['login'].nil?)
@@ -60,10 +61,11 @@ def updateLdap(options = {} )
     end
   end
   # Now handle the userPassword stuff
-  if options['userPassword'].to_s.length < 1
+  pw = PW.new(options['userPassword'])
+  if ! pw.empty?
     options.delete('userPassword')
     options.delete('confirmPassword')
-  elsif options['userPassword'] != options['confirmPassword']
+  elsif ! pw == options['confirmPassword']
     raise ArgumentError, "Passwords do not match.", caller
     return  false
   else
