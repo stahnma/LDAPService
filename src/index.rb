@@ -34,14 +34,6 @@ def streamLogin(cgi)
   if cgi.params['action'].to_s == 'logout'
      logout(cgi)
   end
-#  if cgi.params['action'].to_s == 'forgot'
-#     stream = renderfarm('forgot.erb', options)
-     # obtain login name
-     # email it to registered account email address
-     # allow old pw to still be used
-     # allow user to reset their pw
-     #
-#  end
   return stream.to_s
 end
 
