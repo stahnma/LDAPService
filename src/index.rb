@@ -14,7 +14,7 @@ config = loadConfig('../configuration.yaml')
 stream = ""
 cgi = CGI.new("html4")
 options = {} 
-$session = CGI::Session.new(cgi)
+$session = CGI::Session.new(cgi, 'session_expires' => Time.now + config['PWReset']['Timeout'] * 60 * 60)
 $session['config'] = config
 
 def streamLogin(cgi)
@@ -73,14 +73,19 @@ elsif cgi.params['action'].to_s == 'forgot'
   if cgi.params['step'].to_s == 'validate'
      type = emailOrLogin(cgi.params['login'].to_s) 
      begin
-       email = lookupEmail(cgi.params['login'].to_s, type)
-       #resetMail(email)
+       email_address = lookupEmail(cgi.params['login'].to_s, type)
        options[:session_id] = $session.session_id 
+       $session['email'] = email_address
+       options[:uri] = ENV['HTTP_REFERER'] + "&_session_id=" + options[:session_id]
+       resetMail(email_address, options)
        options[:notice] = "Verification email sent."
      rescue LDAP::ResultError => boom
        options[:errors] = boom.to_s
      end
      stream += renderfarm('forgot.erb', options)
+  elsif cgi.params['step'].to_s == 'reset'
+     options[:login] = $session['email']
+     stream += renderfarm('password_reset.erb', options)
   else 
      stream += renderfarm('forgot.erb')
   end
