@@ -131,3 +131,30 @@ def lookupEmail(value, field)
   end
   return entry['mail'][0] 
 end
+
+def lookupUID(value, field)
+  l = adminBind
+  if field == 'mail'
+    begin
+      entry = l.getEntryByMail(value)
+    rescue LDAP::ResultError => boom
+      raise LDAP::ResultError, boom.to_s, caller
+    end
+  elsif field == 'uid'
+    begin
+      entry = l.getUserEntry(value)
+    rescue LDAP::ResultError => boom
+      raise LDAP::ResultError, boom.to_s, caller
+    end
+  end
+  return entry['uid'][0]
+end
+
+
+def adminUpdate(login, options)
+  l = adminBind
+  #options.delete('confirmPassword')
+  #STDERR.puts options.inspect 
+  #STDERR.puts $session['login']
+  l.update(login, options)
+end

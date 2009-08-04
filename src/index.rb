@@ -56,7 +56,7 @@ end
 
 # see if this is a good session
 stream += streamLogin(cgi)
-if activeSession() #and cgi.params['action'].to_s != 'forgot'
+if activeSession() and cgi.params['action'].to_s != 'forgot'
   # Show management screen
   stream += selfManage(cgi) 
 elsif cgi.params['action'].to_s != 'login' and cgi.params['action'].to_s != 'forgot'
@@ -69,6 +69,7 @@ elsif cgi.params['action'].to_s == 'forgot'
        email_address = lookupEmail(cgi.params['login'].to_s, type)
        options[:session_id] = $session.session_id 
        $session['email'] = email_address
+       $session['login'] = lookupUID(cgi.params['login'].to_s, type)
        options[:uri] = ENV['HTTP_REFERER'] + "&step=reset&_session_id=" + options[:session_id]
        resetMail(email_address, options)
        options[:notice] = "Verification email sent."
@@ -77,19 +78,27 @@ elsif cgi.params['action'].to_s == 'forgot'
      end
      stream += renderfarm('forgot.erb', options)
   elsif cgi.params['step'].to_s == 'reset'
-     options[:login] = $session['email']
+     options[:login] = $session['login']
      stream += renderfarm('password_reset.erb', options)
   elsif cgi.params['step'].to_s == 'adminreset'
      # Validate a password was Entered
-     pw = PW.new(cgi.params['userPassword'].to_s)
-     if ! pw.empty? and pw == cgi.params['confirmPassword'].to_s
-         stream += "Good PW Reset"
+     password = { 'userPassword' => cgi.params['userPassword'].to_s, 
+                  'confirmPassword' => cgi.params['confirmPassword'].to_s }
+     options[:login] = $session['login']
+     pw = PW.new(password['userPassword'])
+     if ! pw.empty? and pw == password['confirmPassword']
+        # begin
+           adminUpdate(password)
+           options[:notice] = "Account Updated Sucessfully."
+        # rescue 
+        #   options[:errors] = "ZOMG"
+        # end
+         # probably logout here
+         stream += renderfarm('password_reset.erb', options)
      else
-         stream += "Bad PW Reset"
+         options[:errors] = "Passwords do not match."
+         stream += renderfarm('password_reset.erb', options)
      end
-     # Validate passwords match
-     #
-
   else 
      stream += renderfarm('forgot.erb')
   end
@@ -97,4 +106,5 @@ end
 #stream += cgi.inspect
 cgi.html{
   cgi.out{ stream } 
+
 }
