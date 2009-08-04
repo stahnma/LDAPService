@@ -128,7 +128,7 @@ def emailOrLogin(login)
   end
 end
 
-def lookup(value, field)
+def lookupEmail(value, field)
   l = adminBind 
   if field == 'mail'
     begin
