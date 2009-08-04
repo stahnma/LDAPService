@@ -76,7 +76,7 @@ elsif cgi.params['action'].to_s == 'forgot'
        email_address = lookupEmail(cgi.params['login'].to_s, type)
        options[:session_id] = $session.session_id 
        $session['email'] = email_address
-       options[:uri] = ENV['HTTP_REFERER'] + "&_session_id=" + options[:session_id]
+       options[:uri] = ENV['HTTP_REFERER'] + "&step=reset&_session_id=" + options[:session_id]
        resetMail(email_address, options)
        options[:notice] = "Verification email sent."
      rescue LDAP::ResultError => boom
