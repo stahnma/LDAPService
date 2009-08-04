@@ -8,6 +8,7 @@ require 'pp'
 require 'cgi'
 require 'cgi/session'
 require 'mail'
+require 'password'
 
 
 config = loadConfig('../configuration.yaml')
@@ -80,9 +81,14 @@ elsif cgi.params['action'].to_s == 'forgot'
      stream += renderfarm('password_reset.erb', options)
   elsif cgi.params['step'].to_s == 'adminreset'
      # Validate a password was Entered
+     pw = PW.new(cgi.params['userPassword'].to_s)
+     if ! pw.empty? and pw == cgi.params['confirmPassword'].to_s
+         stream += "Good PW Reset"
+     else
+         stream += "Bad PW Reset"
+     end
      # Validate passwords match
      #
-     stream += "Admin Reset Invoked"
 
   else 
      stream += renderfarm('forgot.erb')
