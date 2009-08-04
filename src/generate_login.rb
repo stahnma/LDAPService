@@ -48,7 +48,6 @@ def manageUser(options = {})
    end
    options['entry'] = retrInfo(options['fields'])
    return options
-#   return renderfarm('manage.erb', options)
 end 
 
 #TODO test to make sure they are actually authenticated
@@ -130,7 +129,3 @@ def lookupEmail(value, field)
   end
   return entry['mail'][0] 
 end
-
-def sendmail()
-end
-
