@@ -36,17 +36,15 @@ end
 #
 #"
 #
-def resetMail(to)
+def resetMail(to, options = {} )
   #  Get from , from_alias, from YAML
   config = loadConfig('../configuration.yaml')
-  options = {}
   options[:from] =  config['PWReset']['FromAddress']
   options[:from_alias] = config['PWReset']['FromAlias']
   options[:site] = config['Site']
   options[:time] = config['PWReset']['Timeout']
   options[:subject] = "Password Reset Request from '#{options[:site]}.'"
   options[:to] = to
-  options[:session_uri] = 'http://example.com/reset/52ffa5d718d3fcb210df9ee5f57e79e94b18532a6363e0b0f531db9fa53053c4'
   options[:message] = content(config, 'password_reset_mail.erb', options)
   sendemail(options[:from], options[:to],  options[:subject], options[:message], options)
 end
