@@ -29,6 +29,7 @@ TODO - Add a Login link on  forgot screen 1
 TODO - Validate the configuration file has all the required fields (perhaps in a pre-method?)
 TODO - Validate on forgot password screen that you entered something
 TODO - Mod_rewrite my stuff
+TODO - Work with SSL only
 
 
 
