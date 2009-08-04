@@ -13,40 +13,31 @@ class PW
   end
   
   def enoughUppercase?
-     return checker(Regexp.new('[A-Z]') , @minUpper)
+     checker(/[A-Z]/ , @minUpper)
   end
 
   def enoughLowercase?
-     return checker(Regexp.new('[a-z]') , @minLower)
+     checker(/[a-z]/ , @minLower)
   end
   
   def enoughNumeric?
-     return checker(Regexp.new('[0-9]') , @minNum)
+     checker(/[0-9]/ , @minNum)
   end
  
   def enoughSpecialChars?
-     return checker(Regexp.new('\W') , @minSpecial)
+     checker(/\W/ , @minSpecial)
   end
    
   def minLength?
-     if @password.length < @minLength
-        return false
-     end
-     return true
+     @password.length >= @minLength
   end
  
   def passwordMatches?(str)
-      if str == @password 
-        return true
-      end
-      return false
+      str == @password 
   end
 
   def strong?
-      if self.enoughUppercase? and self.enoughLowercase?  and self.enoughNumeric? and self.enoughSpecialChars? and self.minLength?
-         return true
-      end
-      return false
+      self.enoughUppercase? and self.enoughLowercase?  and self.enoughNumeric? and self.enoughSpecialChars? and self.minLength?
   end
   
   private
@@ -56,10 +47,7 @@ class PW
        if letter =~ pattern
          match+=1
        end
-       if match.to_i >= value.to_i
-         return true
-       end
-       return false
-     end
+    end
+    match.to_i >= value.to_i
   end
 end
