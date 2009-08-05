@@ -91,7 +91,7 @@ elsif cgi.params['action'].to_s == 'forgot'
                   'confirmPassword' => cgi.params['confirmPassword'] }
      options[:login] = $session['login']
      pw = PW.new(password['userPassword'].to_s)
-     if ! pw.empty? and pw == password['confirmPassword'].to_s
+     if ! pw.empty? and (pw == password['confirmPassword'].to_s)
          begin
            adminUpdate($session['login'] , password)
            options[:notice] = "Account Updated Sucessfully."
