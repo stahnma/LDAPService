@@ -37,3 +37,4 @@ TODO - Package as a deb
 TODO - Add Logging
 TODO - Break out primary LDAP class as a model
 TODO - Fix session bug (figure out how to reproduce also)
+TODO - Validate a malicious post in pw recovery won't alter other attributes
