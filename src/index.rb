@@ -65,17 +65,21 @@ elsif cgi.params['action'].to_s != 'login' and cgi.params['action'].to_s != 'for
   stream += renderfarm('login.erb')
 elsif cgi.params['action'].to_s == 'forgot'
   if cgi.params['step'].to_s == 'validate'
-     type = emailOrLogin(cgi.params['login'].to_s) 
-     begin
-       email_address = lookupEmail(cgi.params['login'].to_s, type)
-       options[:session_id] = $session.session_id 
-       $session['email'] = email_address
-       $session['login'] = lookupUID(cgi.params['login'].to_s, type)
-       options[:uri] = ENV['HTTP_REFERER'] + "&step=reset&_session_id=" + options[:session_id]
-       resetMail(email_address, options)
-       options[:notice] = "Verification email sent."
-     rescue LDAP::ResultError => boom
-       options[:errors] = boom.to_s
+     unless cgi.params['login'].to_s.empty?
+       type = emailOrLogin(cgi.params['login'].to_s) 
+       begin
+         email_address = lookupEmail(cgi.params['login'].to_s, type)
+         options[:session_id] = $session.session_id 
+         $session['email'] = email_address
+         $session['login'] = lookupUID(cgi.params['login'].to_s, type)
+         options[:uri] = ENV['HTTP_REFERER'] + "&step=reset&_session_id=" + options[:session_id]
+         resetMail(email_address, options)
+         options[:notice] = "Verification email sent."
+       rescue LDAP::ResultError => boom
+         options[:errors] = boom.to_s
+       end
+     else
+        options[:errors] = "You need to enter something."
      end
      stream += renderfarm('forgot.erb', options)
   elsif cgi.params['step'].to_s == 'reset'
