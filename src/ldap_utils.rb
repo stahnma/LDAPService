@@ -7,11 +7,16 @@ require 'pp'
 
 class LdapConnection 
   
-   def initialize()
+   def initialize(ssl = true)
      config = loadConfig('../configuration.yaml')
      @ldapconf = config['LDAPInfo']
+     #TODO arbitrate SSL vs nonSSL
      begin
-       @conn = LDAP::Conn.new(@ldapconf['Host']) 
+       if ssl 
+         @conn = LDAP::SSLConn.new(@ldapconf['Host'], 636) 
+       else
+         @conn = LDAP::Conn.new(@ldapconf['Host']) 
+       end
      rescue LDAP::ResultError
        raise LDAP::ResultError, "Error Connecting to LDAP Server", caller
      end
