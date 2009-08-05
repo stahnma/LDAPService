@@ -6,9 +6,13 @@ task :default do
    sh "ruby generate_login.rb > /srv/lds/login.html"
 end
 
-task :apache do
+task :httpd do
    sh "cp -f contrib/lds-apache.conf /etc/httpd/conf.d"
    sh "/sbin/service httpd restart"
 end
 
-# Need to copy over apache files
+task :apache2 do
+   sh "cp -f contrib/lds-apache.conf /etc/apache2/conf.d"
+   sh "/etc/init.d/apache2 reload"
+end
+

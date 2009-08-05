@@ -30,6 +30,14 @@ Notes:
 
 Requiments:
 -----------
+RH:
  rubygems
  ruby-ldap
+ rubygem-rake
+ httpd
+
+Deb:
+ apache2
+ libldap-ruby1.8
+ rake
 
