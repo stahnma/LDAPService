@@ -18,7 +18,7 @@ class LdapConnection
    end
   
    def login(user, pw)
-     dn = self.getDN(user)
+     dn = getDN(user)
      if pw.nil? or pw == ''
        raise LDAP::ResultError, "Password is blank", caller
      end
@@ -53,7 +53,7 @@ class LdapConnection
    end
 
    def update(user, options)
-     dn =  self.getDN(user)
+     dn =  getDN(user)
      begin 
        return @bound.modify(dn, options)
      rescue LDAP::ResultError => boom
