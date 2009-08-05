@@ -62,7 +62,7 @@ def updateLdap(options = {} )
   end
   # Now handle the userPassword stuff
   pw = PW.new(options['userPassword'])
-  if ! pw.empty?
+  if pw.empty?
     options.delete('userPassword')
     options.delete('confirmPassword')
   elsif ! pw == options['confirmPassword']
@@ -88,9 +88,8 @@ end
 
 def retrInfo( fields)
   l = LdapConnection.new
-  l.login($session['login'], $session['password'])
+  l.login($session['login'].to_s, $session['password'].to_s)
   entry = l.getUserEntry($session['login'])
-  return entry
 end
 
 def adminBind()
@@ -98,7 +97,12 @@ def adminBind()
   config = loadConfig('../configuration.yaml')
   l  = LdapConnection.new
 #  pp config
-  l.login(config['LDAPInfo']['BindDN'], config['LDAPInfo']['BindPW'])
+#  TODO generate a an error if this bind can't happen
+  begin
+    l.login(config['LDAPInfo']['BindDN'], config['LDAPInfo']['BindPW'])
+  rescue LDAP::ResultError => boom
+    raise LDAP::ResultError, boom.to_s, caller
+  end
   return l
 end
 
@@ -153,8 +157,6 @@ end
 
 def adminUpdate(login, options)
   l = adminBind
-  #options.delete('confirmPassword')
-  #STDERR.puts options.inspect 
-  #STDERR.puts $session['login']
+  options.delete('confirmPassword')
   l.update(login, options)
 end
