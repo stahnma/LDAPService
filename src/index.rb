@@ -9,7 +9,15 @@ require 'cgi'
 require 'cgi/session'
 require 'mail'
 require 'password'
+require 'logger'
 
+
+log = Logger.new('/srv/lds/log')
+log.level = Logger::DEBUG
+
+log.debug("Created Logger")
+log.info("Program Started")
+log.warn("Booyah")
 
 config = loadConfig('../configuration.yaml')
 stream = ""
