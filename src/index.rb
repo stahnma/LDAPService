@@ -29,7 +29,7 @@ def streamLogin(cgi)
       $session['password'] = cgi['password'].to_s
     rescue  LDAP::ResultError => boom
        #options = {:errors => "Invalid Login/Password Combination"}
-       options = {:errors => boom}
+       options[:errors]  =  boom.to_s
        stream += renderfarm('login.erb', options)
     end
   end
