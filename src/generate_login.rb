@@ -43,11 +43,15 @@ def manageUser(options = {})
    rescue NoMethodError => boom
       raise LDAP::ResultError, "Unable to read $session", caller
    end
-   options['fields'] = {}
+   options[:write_fields] = {}
    config['UserWritableAttrs'].each do |k, v|
-     options['fields'][k] = v 
+     options[:write_fields][k] = v 
    end
-   options['entry'] = retrInfo(options['fields'])
+   options[:read_fields] = {}
+   config['ReadOnlyAttrs'].each do |k, v|
+     options[:read_fields][k] = v 
+   end
+   options[:entry] = retrInfo()
    return options
 end 
 
@@ -88,7 +92,7 @@ def updateLdap(options = {} )
 end
 
 
-def retrInfo( fields)
+def retrInfo()
   l = LdapConnection.new
   l.login($session['login'].to_s, $session['password'].to_s)
   entry = l.getUserEntry($session['login'])

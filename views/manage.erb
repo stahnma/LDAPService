@@ -1,7 +1,12 @@
 <form action="#" method="post">
     <table>
-    <% options['fields'].each do | label, attr| -%>
-    <% entry = options['entry'][attr] -%>
+    <% options[:read_fields].each do | label, attr| -%>
+    <% entry = options[:entry][attr] -%>
+<tr><th><%= label -%></th> <td><input type="text" name=<%= attr -%> value="<%= entry -%>" disabled="disabled" /></td></tr>
+    <% end -%>
+
+    <% options[:write_fields].each do | label, attr| -%>
+    <% entry = options[:entry][attr] -%>
 <tr><th><%= label -%></th> <td><input type="text" name=<%= attr -%> value="<%= entry -%>" /></td></tr>
     <% end -%>
     <!-- Add Password Attrs  -->
