@@ -16,6 +16,7 @@ stream = ""
 cgi = CGI.new("html4")
 options = {} 
 $session = CGI::Session.new(cgi, 'session_expires' => Time.now + config['PWReset']['Timeout'] * 60 * 60)
+#$session = CGI::Session.new(cgi)
 $session['config'] = config
 
 def streamLogin(cgi)
@@ -81,18 +82,21 @@ elsif cgi.params['action'].to_s == 'forgot'
      options[:login] = $session['login']
      stream += renderfarm('password_reset.erb', options)
   elsif cgi.params['step'].to_s == 'adminreset'
-     # Validate a password was Entered
-     password = { 'userPassword' => cgi.params['userPassword'].to_s, 
-                  'confirmPassword' => cgi.params['confirmPassword'].to_s }
+     # Validate a password was Entered (assigned as arrays)
+     password = { 'userPassword' => cgi.params['userPassword'], 
+                  'confirmPassword' => cgi.params['confirmPassword'] }
      options[:login] = $session['login']
-     pw = PW.new(password['userPassword'])
-     if ! pw.empty? and pw == password['confirmPassword']
-        # begin
-           adminUpdate(password)
+     pw = PW.new(password['userPassword'].to_s)
+     if ! pw.empty? and pw == password['confirmPassword'].to_s
+         begin
+           adminUpdate($session['login'] , password)
            options[:notice] = "Account Updated Sucessfully."
-        # rescue 
-        #   options[:errors] = "ZOMG"
-        # end
+           # Logout hack here
+           $session.close
+           $session.delete
+         rescue 
+           options[:errors] = "ZOMG"
+         end
          # probably logout here
          stream += renderfarm('password_reset.erb', options)
      else
@@ -103,8 +107,7 @@ elsif cgi.params['action'].to_s == 'forgot'
      stream += renderfarm('forgot.erb')
   end
 end
-#stream += cgi.inspect
+
 cgi.html{
   cgi.out{ stream } 
-
 }
