@@ -34,3 +34,6 @@ TODO - Allow user to login with email address in normal session also
 TODO - Add password Strenght configuration
 TODO - Package as an RPM
 TODO - Package as a deb
+TODO - Add Logging
+TODO - Break out primary LDAP class as a model
+TODO - Fix session bug (figure out how to reproduce also)
