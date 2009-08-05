@@ -65,7 +65,7 @@ def updateLdap(options = {} )
   if pw.empty?
     options.delete('userPassword')
     options.delete('confirmPassword')
-  elsif ! pw == options['confirmPassword']
+  elsif ! (pw == options['confirmPassword'])
     raise ArgumentError, "Passwords do not match.", caller
     return  false
   else
@@ -80,7 +80,9 @@ def updateLdap(options = {} )
   if options['userPassword'].to_s.length > 1
        $session['password'] =  options['userPassword'].to_s
        l.unbind()
-       $session['ldap'] = l.login($session['login'].to_s, $session['password'].to_s)
+       # Rebind happens too quickly if replciation hasn't occurred yet
+       sleep 2
+       $session['ldap'] = l.login($session['login'].to_s, options['userPassword'].to_s)
   end
   return result
 end
