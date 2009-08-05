@@ -1,11 +1,15 @@
 Setup
 ------
 Right now this expects you check it out in /srv/lds
-Then run 'sudo rake apache'
+Then run 'sudo rake httpd' on Fedora/RHEL/Centos
+or 'sudo rake apache2' on Debian
+
+* Install the proper Packages
+* Ensure you can send email from the system
+* Update your configuration file
+* 
 
 From there you should be ok.
-
-
 
 
 Just some thoughts
