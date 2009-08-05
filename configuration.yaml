@@ -17,3 +17,11 @@ UserWritableAttrs:
   Mail: mail
   Phone: telephoneNumber
   Pager: pager
+
+#The following information is used for Password Reset Emails
+PWReset:
+  # Time a reset session is kept alive (in hours)
+  Timeout: 24
+  # Who is the email from
+  FromAlias: Example Org Administrator
+  FromAddress: noreply@example.com
