@@ -41,3 +41,5 @@ TODO - Validate a malicious post in pw recovery won't alter other attributes
 TODO - handle inability to contact LDAP server (give major warning)
 TODO - Rakefile for setting verification, or a simple test at app startup or something
 TODO - Recovery Password perhaps should send a notice to the account?
+TODO - Make SSL ldap connection a configuration option (with a reasonable default)
+TODO - Implement HTTPd SSL
