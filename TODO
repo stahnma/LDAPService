@@ -38,3 +38,5 @@ TODO - Add Logging
 TODO - Break out primary LDAP class as a model
 TODO - Fix session bug (figure out how to reproduce also)
 TODO - Validate a malicious post in pw recovery won't alter other attributes
+TODO - handle inability to contact LDAP server (give major warning)
+TODO - Rakefile for setting verification, or a simple test at app startup or something
