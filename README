@@ -1,3 +1,31 @@
+LDAPService
+-------------
+LDAPService or lds as I am currently calling it, is a tool to allow for user
+self-management and password recovery based a fairly typical LDAP setup.
+
+The setup assumes you have users in an objectclass that contains 'userPassword' 
+as the attribute that contains their password and that 'self-write' is enabled
+on that attribute.  Most everything else is configurable in the configuration
+file, which is simple YAML.
+
+This project allows for:
+* Self service of any self-writable attribute
+* Password Recovery if a password is forgotten
+
+Status
+-------
+Project is still pre-alpha.  It has some basic functionality, but bugs are 
+probably quite common.  Also, the TODO list is growing quite long.
+
+
+License
+-------
+GPLv2 and later.
+
+Copyright 2009; Michael Stahnke
+
+
+
 Setup
 ------
 Right now this expects you check it out in /srv/lds
@@ -7,29 +35,12 @@ or 'sudo rake apache2' on Debian
 * Install the proper Packages
 * Ensure you can send email from the system
 * Update your configuration file
-* 
-
-From there you should be ok.
-
-
-Just some thoughts
-
-User Interface Management
-- Set Shell - read from available shells in yaml?
-- Set Phone number - mulitple types (check the LDAP Schema)
-- upload SSH Key (cfmgmt to dist on the back side)
-- set preferred email
-- allow password reset
-- temp password reset
-- set password encryption type in yaml config
-
-
-Account
 
 
 Notes:
-* The rakefile is a joke and only there for my test setup currently
-* 
+------
+* The rakefile is a joke and only there for my test setup currently 
+  (more or less)
 
 
 Requiments:
@@ -44,4 +55,3 @@ Deb:
  apache2
  libldap-ruby1.8
  rake
-
