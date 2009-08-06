@@ -18,6 +18,11 @@ UserWritableAttrs:
   Phone: telephoneNumber
   Pager: pager
 
+# The following Attributes will show up as 'grayed out' when
+# a user is managing their account.  
+ReadOnlyAttrs:
+  Login: uid
+
 #The following information is used for Password Reset Emails
 PWReset:
   # Time a reset session is kept alive (in hours)
