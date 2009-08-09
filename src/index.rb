@@ -12,19 +12,11 @@ require 'password'
 require 'logger'
 
 
-#log = Logger.new('/srv/lds/log')
-#log.level = Logger::DEBUG
-
-##log.debug("Created Logger")
-#log.info("Program Started")
-#log.warn("Booyah")
-
 config = loadConfig('../configuration.yaml')
 stream = ""
 cgi = CGI.new("html4")
 options = {} 
 $session = CGI::Session.new(cgi, 'session_expires' => Time.now + config['PWReset']['Timeout'] * 60 * 60)
-#$session = CGI::Session.new(cgi)
 $session['config'] = config
 
 def streamLogin(cgi)
@@ -36,7 +28,6 @@ def streamLogin(cgi)
       $session['login'] = cgi['login'].to_s
       $session['password'] = cgi['password'].to_s
     rescue  LDAP::ResultError => boom
-       #options = {:errors => "Invalid Login/Password Combination"}
        options[:errors]  =  boom.to_s
        stream += renderfarm('login.erb', options)
     end
