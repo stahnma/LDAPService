@@ -1,9 +1,10 @@
 NAME='lssm'
+PWD=`pwd`.strip!
+SPEC_FILE="contrib/#{NAME}.spec"
 
-task :default do
-   sh "rsync -avx  views/style/* /srv/#{NAME}/style"
-   sh "ruby generate_index.rb > /srv/#{NAME}/index.html"
-   sh "ruby generate_login.rb > /srv/#{NAME}/login.html"
+RPM_DEFINES = " --define \"_specdir #{PWD}/SPECS\" --define \"_rpmdir #{PWD}/RPMS\" --define \"_sourcedir #{PWD}/SOURCES\" --define \" _srcrpmdir #{PWD}/SRPMS\" --define \"_builddir #{PWD}/BUILD\""
+
+task :default => :tarball  do 
 end
 
 task :httpd do
@@ -17,10 +18,27 @@ task :apache2 do
 end
 
 task :clean  do
-  sh "rm -f *tar.gz"
+  sh "rm -rf BUILD SOURCES SPECS SRPMS RPMS *.rpm *.tar.gz"
 end
 
+task :rpmcheck_fedora do
+  sh " [ -f /usr/bin/rpmbuild ] "
+end
 
+task :rpmcheck_el do
+  sh " [ -f /usr/bin/rpmbuild-md5 ] "
+end
+
+task :dirs do
+  dirs = [ 'BUILD', 'SPECS', 'SOURCES', 'RPMS', 'SRPMS' ] 
+  dirs.each do |d|
+    FileUtils.mkdir_p "#{PWD}//#{d}"
+  end
+  sh "mv *.tar.gz SOURCES"
+  sh "cp  contrib/#{NAME}.spec SPECS"
+end
+
+"Create a tarball of source in local directory"
 task :tarball => :clean  do
   puts
   version=`grep ^Version contrib/*.spec | awk '{print $NF}'`.strip()
@@ -32,5 +50,17 @@ task :tarball => :clean  do
   puts "Tarball is #{NAME}-#{version}.tar.gz"
 end
 
-task :rpm do
+"Create a SRPM. (using md5 hash, not the new SHA1)"
+task :srpm => [ :rpmcheck_el , :tarball , :dirs ] do
+  sh "rpmbuild-md5   #{RPM_DEFINES}  -bs #{SPEC_FILE}"
+  sh "mv -f SRPMS/* ."
+  sh "rm -rf BUILD SRPMS RPMS SPECS SOURCES"
+end
+
+
+"Create a binary RPM. (using md5 hash, not the new SHA1)"
+task :rpm => [ :rpmcheck_el , :tarball , :dirs ] do
+  sh "rpmbuild-md5   #{RPM_DEFINES}  -bb #{SPEC_FILE}"
+  sh "mv -f RPMS/noarch/* ."
+  sh "rm -rf BUILD SRPMS RPMS SPECS SOURCES"
 end
