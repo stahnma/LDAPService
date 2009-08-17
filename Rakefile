@@ -1,5 +1,4 @@
 
-
 task :default do
    sh "rsync -avx  views/style/* /srv/lds/style"
    sh "ruby generate_index.rb > /srv/lds/index.html"
@@ -16,3 +15,8 @@ task :apache2 do
    sh "/etc/init.d/apache2 reload"
 end
 
+task :tarball do 
+end
+
+task :rpm do
+end
