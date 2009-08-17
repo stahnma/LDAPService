@@ -1,6 +1,6 @@
 LDAPService
 -------------
-LDAPService or lds as I am currently calling it, is a tool to allow for user
+LDAP Self Service Manager or lssm as I am currently calling it, is a tool to allow for user
 self-management and password recovery based a fairly typical LDAP setup.
 
 The setup assumes you have users in an objectclass that contains 'userPassword' 
@@ -28,7 +28,7 @@ Copyright 2009; Michael Stahnke
 
 Setup
 ------
-Right now this expects you check it out in /srv/lds
+Right now this expects you check it out in /srv/lssm
 Then run 'sudo rake httpd' on Fedora/RHEL/Centos
 or 'sudo rake apache2' on Debian
 
