@@ -8,35 +8,51 @@ License:        GPLv2+
 URL:            http://github.com/stahnma/LDAPService
 Source0:        lssm-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch:      noarch
 
-BuildRequires:  
-Requires:       
+BuildRequires:  rubygem-rake, httpd
+Requires:       ruby-ldap
 
 %description
-
+A simple, configurable LDAP account management utility.  Users can
+update their account information and recover/reset lost passwords 
+as long as they have an account in LDAP.  See README.
 
 %prep
 %setup -q
 
 
 %build
-%configure
-make %{?_smp_mflags}
 
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT/srv/lssm/{src,style,views}
+cp -pr src/* $RPM_BUILD_ROOT/srv/lssm/src
+cp -pr views/* $RPM_BUILD_ROOT/srv/lssm/views
+cp -pr style/* $RPM_BUILD_ROOT/srv/lssm/style
+mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/lssm
+cp -pr configuration.yaml $RPM_BUILD_ROOT/%{_sysconfdir}/lssm
+pushd $RPM_BUILD_ROOT/srv/lssm
+ln -s ../../%{_sysconfdir}/lssm/configuration.yaml  .
+popd
+mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf.d/
+cp -pr contrib/lssm-apache.conf  $RPM_BUILD_ROOT/%{_sysconfdir}/httpd/conf.d/
 
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-
 %files
 %defattr(-,root,root,-)
-%doc README TODO AUTHORS
-
+%doc README TODO AUTHORS Rakefile
+%doc contrib
+%doc tests
+/srv/lssm
+%config(noreplace) %{_sysconfdir}/lssm
+%config(noreplace) %{_sysconfdir}/httpd/conf.d/lssm-apache.conf
 
 
 %changelog
+* Mon Aug 17 2009 Michael Stahnke <stahnma@websages.com> - 0.01-1
+- Initial packaging.

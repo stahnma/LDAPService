@@ -16,6 +16,10 @@ task :apache2 do
    sh "/etc/init.d/apache2 reload"
 end
 
+task :clean  do
+  sh "rm -f *tar.gz"
+end
+
 
 task :tarball => :clean  do
   puts
