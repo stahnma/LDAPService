@@ -1,4 +1,3 @@
-#!/usr/bin/ruby
 
 require 'erb'
 require 'ldap_utils'

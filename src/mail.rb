@@ -1,5 +1,4 @@
-#!/usr/bin/env ruby
-#
+
 require 'net/smtp'
 require 'erb'
 require 'utils'

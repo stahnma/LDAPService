@@ -1,5 +1,3 @@
-#/usr/bin/env ruby
-#
 #
 require 'ldap_utils'
 require 'utils'
