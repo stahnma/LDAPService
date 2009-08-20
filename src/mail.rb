@@ -21,20 +21,6 @@ EOF
   end
 end
 
-
-#sendmail('mike@whatever.com', 'mastahnke@gmail.com', 'whatever', 'message body' , { :from_alias => 'mikealias' , :to_alias => "Yo"}  ) 
-#
-# Use Erb for email probably
-# "You, or somebody claiming to be you has forgotten your password on #{site}.  To reset your password please use the following link which is valid for the next #{time} hours.  
-#   #{session_ur}.  
-#If you miraculously remember your password, or decide not to reset anything, your old password will still work. 
-#
-#Thank you,
-#{site} Admins
-#
-#
-#"
-#
 def resetMail(to, options = {} )
   #  Get from , from_alias, from YAML
   config = loadConfig('../configuration.yaml')
@@ -47,6 +33,3 @@ def resetMail(to, options = {} )
   options[:message] = content(config, 'password_reset_mail.erb', options)
   sendemail(options[:from], options[:to],  options[:subject], options[:message], options)
 end
-
-
-#resetMail('mike')
