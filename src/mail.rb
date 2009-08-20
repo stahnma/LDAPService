@@ -7,8 +7,8 @@ require 'presentation'
 def sendemail(from, to, subject, message, options = {}) 
   #   => from_alias (optional)
   #   =>  to_alias (optional)       
-  from = options[:from_alias].to_s  + "<#{from}>"
-  to = options[:to_alias].to_s  + "<#{to}>"
+  from = options[:from_alias].to_s  + "#{from}"
+  to = options[:to_alias].to_s  + "#{to}"
   msg = <<EOF
 From: #{from}
 To: #{to}
