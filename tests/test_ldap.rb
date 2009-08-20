@@ -70,6 +70,18 @@ class TC_ldapTest < Test::Unit::TestCase
       @l.getUserEntry('bogus123')
     }
   end
+
+  def test_findNextUIDNumber_nostartrange
+    dn="uid=#{USERNAME},ou=people,"+ @config['LDAPInfo']['BaseDN']
+    @l.login(dn, ENV['LDAP_PASSWORD'])
+    assert(@l.findNextUIDNumber().integer?)
+  end
+
+  def test_findNextUIDNumber_startrange
+    dn="uid=#{USERNAME},ou=people,"+ @config['LDAPInfo']['BaseDN']
+    @l.login(dn, ENV['LDAP_PASSWORD'])
+    assert (@l.findNextUIDNumber(30000) == 30000)
+  end
   
   
 end
