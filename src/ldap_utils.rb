@@ -6,7 +6,7 @@ require 'pp'
 
 class LdapConnection 
   
-   def initialize(ssl = true)
+   def initialize(ssl = false)
      config = loadConfig('../configuration.yaml')
      @ldapconf = config['LDAPInfo']
      #TODO arbitrate SSL vs nonSSL
@@ -19,6 +19,10 @@ class LdapConnection
      rescue LDAP::ResultError
        raise LDAP::ResultError, "Error Connecting to LDAP Server", caller
      end
+   end
+
+   def add(dn, attrs)
+     @bound.add(dn, attrs)
    end
   
    def login(user, pw)
@@ -33,6 +37,18 @@ class LdapConnection
        return false
      end
      return true
+   end
+
+   def findNextUIDNumber(start_range = -1 )
+     max = -1
+     @bound.search(@ldapconf['BaseDN'], LDAP::LDAP_SCOPE_SUBTREE, "(uidNumber=*)", 'uidNumber') do |uidNumber|
+      uid = uidNumber['uidNumber'][0].to_i
+         if uid > max
+            max=uid
+        end
+     end
+     return max+1 if max+1 > start_range.to_i
+     start_range
    end
 
    # This seems buggy.  Like it would return one result, even though there are many
