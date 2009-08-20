@@ -30,3 +30,19 @@ PWReset:
   # Who is the email from
   FromAlias: Example Org Administrator
   FromAddress: noreply@example.com
+
+UserSetup:
+  AltSiteNames:
+    - example.org
+    - example.com
+  ExampleHostname: yoda
+  DefaultGroupID: 13804
+  LoginShell: /bin/bash
+  HomePrefix: /home
+  ObjectClasses:
+    - top
+    - person
+    - organizationalPerson
+    - inetorgperson
+    - posixAccount
+  AccountOU: ou=people
