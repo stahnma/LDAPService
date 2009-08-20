@@ -7,77 +7,53 @@ require 'mail'
 user=ENV['USER']
 password=ENV['LDAP_PASSWORD']
 
-#l = LdapConnection.new
-#l.login(user, password)
-
-#options = { 'telephoneNumber' => [" +1 309 840 1541" ] } 
-#options = { 'telephoneNumber' => [" +1 555 840 1541" ] } 
-#adminUpdate('stahnma', options)
-#options = { 'telephoneNumber' => [ ] } 
-#l.update(user, options)
-
-
-# New User
-#
-# username
-# First , Last
-# email address
-#
-# New User in LDAP Method
-# Send the confirmation Mail method
-#
-username='timmy'
+# prompt or CLI for this crap
+username='timmy4'
 lastname='stahnke'
 firstname='michael'
-email='mastahnke@gmail.com'
+email='mastahnke@yahoo.com'
+
+# Ensure current user can login to LDAP
+config = loadConfig('../configuration.yaml')
+
+# Do some type of configuration file validation
 
 
 def addLdapUser(username, lastname, firstname, email)
   config = loadConfig('../configuration.yaml')
-  # Login to LDAP
   l = LdapConnection.new
   l.login('stahnma', ENV['LDAP_PASSWORD'])
-  uidNumber = l.findNextUIDNumber
-  gidNumber = config['UserSetup']['DefaultGroupID'].to_i
-  options = {}
+  uidNumber = l.findNextUIDNumber.to_s
+  gidNumber = config['UserSetup']['DefaultGroupID'].to_s
   options = { 'cn' => [ lastname ] ,  
               'sn' => [ lastname ] ,  
               'mail' => [ email ] ,
               'uid' => [ username ] , 
-              'uidNumber' => [ uidNumber.to_s ] ,
-              'gidNumber' => [ gidNumber.to_s ] ,
+              'uidNumber' => [ uidNumber ] ,
+              'gidNumber' => [ gidNumber ] ,
               'gecos' => [ "#{firstname} #{lastname}" ] ,
               'homedirectory' => [ config['UserSetup']['HomePrefix'] + '/' + username ] , 
               'loginshell' =>  [ config['UserSetup']['LoginShell'] ] ,
               'givenName' => [ firstname ] ,
               'objectclass' =>  config['UserSetup']['ObjectClasses'] 
            }
-  p options
-  dn = "uid=#{username},ou=people,dc=stahnkage,dc=com"
+  dn = "uid=#{username},#{config['UserSetup']['AccountOU']},#{config['LDAPInfo']['BaseDN']}"
   l.add(dn, options)
+  sendNewUserLetter(username, lastname, firstname, email)
 end
-  
-
 
 
 
 def sendNewUserLetter(username, lastname, firstname, email)
   userid=username
-  options = {} 
-  # Get proper information from the YAML File
   config = loadConfig('../configuration.yaml')
   sitename = config['Site']
   hostname = config['UserSetup']['ExampleHostname']
   forgot_password_link = 'blahblah'
-  options[:from_alias] = 'bob'
-  options[:to_alias]= firstname + ' ' + lastname
-  # Fill out the ERb
   template = get_file_as_string("../views/new_user.erb")
   message = ERB.new(template, 0, "-")
-  output = message.result(binding)
-  # Ship it
-  sendemail(config['PWReset']['FromAddress'], email, "Shiney new account from #{config['Site']}", output)
+  sendemail(config['PWReset']['FromAddress'], email, "Shiney new account from #{config['Site']}", message.result(binding))
 end
 
-#sendNewUserLetter(username, lastname, firstname, email)
 addLdapUser(username, lastname, firstname, email)
+#sendNewUserLetter(username, lastname, firstname, email)

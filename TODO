@@ -43,3 +43,7 @@ TODO - Rakefile for setting verification, or a simple test at app startup or som
 TODO - Recovery Password perhaps should send a notice to the account?
 TODO - Make SSL ldap connection a configuration option (with a reasonable default)
 TODO - Implement HTTPd SSL
+TODO - Check to see if a user already exists before trying to add them 
+TODO - Rewrite configuration load method to look for proper pathing of files, then validate config, then complain upon bad results
+TODO - Add a hooks or exists option for adding a user or changing passwords
+TODO - Add Command Line Parsing of the useradd tool
