@@ -45,4 +45,5 @@ UserSetup:
     - organizationalPerson
     - inetorgperson
     - posixAccount
+    - shadowAccount
   AccountOU: ou=people
