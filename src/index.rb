@@ -56,7 +56,7 @@ end
 
 # see if this is a good session
 stream += streamLogin(cgi)
-if activeSession() and cgi.params['action'].to_s != 'forgot'
+if activeSession() and cgi.params['action'].to_s != 'forgot' and $session['password']
   # Show management screen
   stream += selfManage(cgi) 
 elsif cgi.params['action'].to_s != 'login' and cgi.params['action'].to_s != 'forgot'
