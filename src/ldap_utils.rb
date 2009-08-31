@@ -6,7 +6,7 @@ require 'pp'
 
 class LdapConnection 
   
-   def initialize(ssl = false)
+   def initialize(ssl = true)
      config = loadConfig('../configuration.yaml')
      @ldapconf = config['LDAPInfo']
      #TODO arbitrate SSL vs nonSSL
