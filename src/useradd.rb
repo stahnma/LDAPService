@@ -6,7 +6,7 @@ require 'mail'
 require 'getoptlong'
 
 def usage
-  puts "#{$0} --uid <username> --email <email@example.com> --firstname <your> --lastname <mom>"
+  puts "#{$0} --userid <username> --email <email@example.com> --firstname <your> --lastname <mom>"
   puts "[ --ldapuser <#{ENV['USER']}> | --ldappassword $LDAP_PASSWORD ]"
   exit 1
 end
@@ -48,7 +48,7 @@ end
 def process_options
   account = {}
   opts = GetoptLong.new( [ '--help', '-h', GetoptLong::NO_ARGUMENT ] ,
-    [ '--uid', '-u', GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--userid', '-u', GetoptLong::REQUIRED_ARGUMENT ],
     [ '--email', '-e', GetoptLong::REQUIRED_ARGUMENT ],
     [ '--firstname', '-f', GetoptLong::REQUIRED_ARGUMENT ],
     [ '--lastname', '-l', GetoptLong::REQUIRED_ARGUMENT ],
@@ -61,7 +61,7 @@ def process_options
       when '--help'
         usage
         exit 1
-      when '--uid'
+      when '--userid'
         account[:userid] = arg.to_s
       when '--email'
         account[:email] = arg.to_s
@@ -83,7 +83,7 @@ def process_options
   account[:ldapuser] = ENV['USER'] unless account[:ldapuser]
   account[:ldappassword] = ENV['LDAP_PASSWORD'] unless account[:ldappassword]
 
-  unless (account[:userid] and account[:mail] and account[:lastname] and account[:firstname])
+  unless (account[:userid] and account[:email] and account[:lastname] and account[:firstname])
     usage
     exit 1
   end
