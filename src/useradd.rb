@@ -83,6 +83,11 @@ def process_options
   account[:ldapuser] = ENV['USER'] unless account[:ldapuser]
   account[:ldappassword] = ENV['LDAP_PASSWORD'] unless account[:ldappassword]
 
+  unless (account[:userid] and account[:mail] and account[:lastname] and account[:firstname])
+    usage
+    exit 1
+  end
+
   unless account[:ldappassword]
     puts "Please set $LDAP_PASSWORD environment variable."
     exit 1
