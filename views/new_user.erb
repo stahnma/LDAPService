@@ -3,14 +3,15 @@ Here is your shiny new unix account and instructions on how to access it:
 First, you'll need a password.  We don't set one by default because we
 don't want to know what it is.  To get a password, you'll need to use 
 the following link.  
-  <%= forgot_password_link -%>
+
+  <%= forgot_password_link %>
 
 Once you're done with that, you can move on.
 
 
 If you're on MacOS X or Linux/UNIX
 ---------------------------------
-ssh <%= userid -%>@<%= sitename -%>
+ssh <%= userid -%>@<%= sitename %>
 password: whatever
 <%= hostname -%>$ irc
 ---------------------------------
@@ -30,7 +31,6 @@ In either case, you can type "passwd" before irc and change the password to
 something you can remember. It will prompt you for your current password once
 and your new password twice.
 
-
 Advanced Features:
 -----------------
 There is a file called .pageremail, that is the email address to which you can send/recieve
@@ -49,7 +49,7 @@ with where and when we're hanging out, remove it.
 # Need to update information about shouts, pages, emails 
 
 You also get shiney new email addresses that are forwarded to the email address you've provided.
-<%= userid -%>@<%= sitename -%>
+<%= userid -%>@<%= sitename %>
 <!-- Do this with a foreach and iterate over alt_sitenames -->
 <%= userid -%>@wcyd.org
 <%= userid -%>@websages.com
