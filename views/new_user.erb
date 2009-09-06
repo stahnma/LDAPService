@@ -50,6 +50,10 @@ with where and when we're hanging out, remove it.
 
 You also get shiney new email addresses that are forwarded to the email address you've provided.
 <%= userid -%>@<%= sitename %>
-<!-- Do this with a foreach and iterate over alt_sitenames -->
-<%= userid -%>@wcyd.org
-<%= userid -%>@websages.com
+<% altsitenames.each do |s|  %>
+<%= userid -%>@<%= s %>
+<% end -%>
+
+
+Thanks.
+

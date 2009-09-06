@@ -45,6 +45,7 @@ def sendNewUserLetter(username, lastname, firstname, email)
   sitename = config['Site']
   hostname = config['UserSetup']['ExampleHostname']
   forgot_password_link = config['UserSetup']['ResetURI']
+  altsitenames = config['UserSetup']['AltSiteNames']
   template = get_file_as_string("../views/new_user.erb")
   message = ERB.new(template, 0, "-")
   sendemail(config['PWReset']['FromAddress'], email, "Shiney new account from #{config['Site']}", message.result(binding))
