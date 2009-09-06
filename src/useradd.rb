@@ -30,8 +30,13 @@ def addLdapUser(username, lastname, firstname, email, ldapuser, ldappassword)
               'objectclass' =>  config['UserSetup']['ObjectClasses'] 
            }
   dn = "uid=#{username},#{config['UserSetup']['AccountOU']},#{config['LDAPInfo']['BaseDN']}"
-  l.add(dn, options)
-#  sendNewUserLetter(username, lastname, firstname, email)
+  begin
+    l.add(dn, options)
+  # This might be rescuing other types of errors than simply duplicates, but I haven't been able to create any yet
+  rescue LDAP::ResultError
+    puts "Userid '#{username}' already found in LDAP."
+    exit 2
+  end
 end
 
 def sendNewUserLetter(username, lastname, firstname, email)
@@ -39,7 +44,7 @@ def sendNewUserLetter(username, lastname, firstname, email)
   config = loadConfig('../configuration.yaml')
   sitename = config['Site']
   hostname = config['UserSetup']['ExampleHostname']
-  forgot_password_link = 'blahblah'
+  forgot_password_link = config['UserSetup']['ResetURI']
   template = get_file_as_string("../views/new_user.erb")
   message = ERB.new(template, 0, "-")
   sendemail(config['PWReset']['FromAddress'], email, "Shiney new account from #{config['Site']}", message.result(binding))
@@ -98,5 +103,6 @@ end
 
 config = loadConfig('../configuration.yaml')
 account = process_options()
-addLdapUser(account[:userid], account[:lastname], account[:firstname], account[:email], account[:ldapuser], account[:ldappassword])
-sendNewUserLetter(account[:userid], account[:lastname], account[:firstname], account[:email])
+if (addLdapUser(account[:userid], account[:lastname], account[:firstname], account[:email], account[:ldapuser], account[:ldappassword]) ) 
+  sendNewUserLetter(account[:userid], account[:lastname], account[:firstname], account[:email])
+end
