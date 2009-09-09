@@ -98,6 +98,17 @@ class LdapConnection
      end
      return dn
    end
+
+   def delete(user)
+     dn =  getDN(user)
+     begin 
+       return @bound.delete(dn)
+     rescue LDAP::ResultError => boom
+       raise LDAP::ResultError, boom.to_s, caller 
+       return false
+     end
+     return true
+   end
 end
 
 #TODO handle if password is not defined in either spot
