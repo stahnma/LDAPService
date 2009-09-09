@@ -7,7 +7,7 @@ require 'getoptlong'
 
 def usage
   puts "#{$0} --userid <username> --email <email@example.com> --firstname <your> --lastname <mom>"
-  puts "[ --ldapuser <#{ENV['USER']}> | --ldappassword $LDAP_PASSWORD ]"
+  puts "[ --ldapuser <#{ENV['USER']}> | --ldappassword $LDAP_PASSWORD ] [ --delete userid ] "
   exit 1
 end
 
@@ -39,6 +39,13 @@ def addLdapUser(username, lastname, firstname, email, ldapuser, ldappassword)
   end
 end
 
+def delete_account(username, ldapuser, ldappassword)
+  config = loadConfig('../configuration.yaml')
+  l = LdapConnection.new
+  l.login(ldapuser, ldappassword)
+  l.delete(username)
+end
+
 def sendNewUserLetter(username, lastname, firstname, email)
   userid=username
   config = loadConfig('../configuration.yaml')
@@ -59,7 +66,8 @@ def process_options
     [ '--firstname', '-f', GetoptLong::REQUIRED_ARGUMENT ],
     [ '--lastname', '-l', GetoptLong::REQUIRED_ARGUMENT ],
     [ '--ldapuser', '-L', GetoptLong::OPTIONAL_ARGUMENT ],
-    [ '--ldappassword', '-P', GetoptLong::OPTIONAL_ARGUMENT ]
+    [ '--ldappassword', '-P', GetoptLong::OPTIONAL_ARGUMENT ],
+    [ '--delete', '-d', GetoptLong::OPTIONAL_ARGUMENT ]
   )
   begin
   opts.each do | opt, arg|
@@ -79,6 +87,9 @@ def process_options
         account[:ldapuser] = arg.to_s
       when '--ldappassword'
         account[:ldappassword] = arg.to_s
+      when '--delete'
+        account[:userid] = arg.to_s
+        account[:action] = 'delete'
       end
   end
   rescue GetoptLong::InvalidOption 
@@ -86,10 +97,11 @@ def process_options
       usage
       exit 1
   end
+
   account[:ldapuser] = ENV['USER'] unless account[:ldapuser]
   account[:ldappassword] = ENV['LDAP_PASSWORD'] unless account[:ldappassword]
 
-  unless (account[:userid] and account[:email] and account[:lastname] and account[:firstname])
+  unless ( (account[:userid] and account[:email] and account[:lastname] and account[:firstname]) or (account[:action] == "delete") )
     usage
     exit 1
   end
@@ -97,6 +109,15 @@ def process_options
   unless account[:ldappassword]
     puts "Please set $LDAP_PASSWORD environment variable."
     exit 1
+  end
+
+  if account[:action] == 'delete' 
+     if delete_account(account[:userid], account[:ldapuser], account[:ldappassword])
+       exit 0
+     else
+       puts "Unable to remove account."
+       exit 2
+     end
   end
   return account
 end
