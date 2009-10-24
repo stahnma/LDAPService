@@ -1,50 +1,38 @@
-Almost everything
-
-
-x * See if you can combine erb templates for less editing.  I think you can.
-x * Write the back end 
-x * Validate against the directory
-x * Self-service update
-* SSH Key
-* GPG Key stuff
-x * mail token
-* Have a malicious user test
-* Write input sanitation routines
-
-
-x TODO make a session broker
-TODO fix session dumping in /tmp
-TODO Make error page
-x TODO - make a logout method
-x TODO trap error if user can't update their own record
-TODO - make logout method not be hard-coded to /lssm/index.rb
-x TODO - Make account update page show updated data
-x TODO - Handle password confirmation logic
-x TODO - if password left blank, don't attempt update it
-x TODO - when updating password, handle next actions, like logout 
-TODO - write tests for nearly everything :(
-x TODO - When updating account, handle MMR not replicating yet.
-TODO - Add Plugins to handle accounts being updated kicking off external scripts
-x TODO - Add a Login link on  forgot screen 1
-TODO - Validate the configuration file has all the required fields (perhaps in a pre-method?)
-x TODO - Validate on forgot password screen that you entered something
-TODO - Mod_rewrite my stuff
-TODO - Work with SSL only
-TODO - Allow user to login with email address in normal session also
-TODO - Add password Strength configuration
-x TODO - Package as an RPM
-TODO - Package as a deb
-TODO - Add Logging
-TODO - Break out primary LDAP class as a model
-x TODO - Fix session bug (figure out how to reproduce also)
-TODO - Validate a malicious post in pw recovery won't alter other attributes
-x TODO - handle inability to contact LDAP server (give major warning)
-TODO - Rakefile for setting verification, or a simple test at app startup or something
-TODO - Recovery Password perhaps should send a notice to the account?
-TODO - Make SSL ldap connection a configuration option (with a reasonable default)
-TODO - Implement HTTPd SSL
-TODO - Check to see if a user already exists before trying to add them 
-TODO - Rewrite configuration load method to look for proper pathing of files, then validate config, then complain upon bad results
 TODO - Add a hooks or exists option for adding a user or changing passwords
 TODO - Add Command Line Parsing of the useradd tool
+TODO - Add Logging
+TODO - Add password Strength configuration
+TODO - Add Plugins to handle accounts being updated kicking off external scripts
+TODO - Allow user to login with email address in normal session also
+TODO - Break out primary LDAP class as a model
+TODO - Check to see if a user already exists before trying to add them 
 TODO - Create a delete account option
+TODO - fix session dumping in /tmp
+TODO - Implement HTTPd SSL
+TODO - Make error page
+TODO - make logout method not be hard-coded to /lssm/index.rb
+TODO - Mod_rewrite my stuff
+TODO - Package as a deb
+TODO - put installation in /usr/share
+TODO - Rakefile for setting verification, or a simple test at app startup or something
+TODO - Recovery Password perhaps should send a notice to the account?
+TODO - Rewrite configuration load method to look for proper pathing of files, then validate config, then complain upon bad results
+TODO - SSH Key
+TODO - Validate a malicious post in pw recovery won't alter other attributes
+TODO - Validate the configuration file has all the required fields (perhaps in a pre-method?)
+TODO - Work with SSL only
+TODO - write tests for nearly everything :(
+x TODO - Add a Login link on  forgot screen 1
+x TODO - Fix session bug (figure out how to reproduce also)
+x TODO - handle inability to contact LDAP server (give major warning)
+x TODO - Handle password confirmation logic
+x TODO - if password left blank, don't attempt update it
+x TODO - Make account update page show updated data
+x TODO - make a logout method
+x TODO - make a session broker
+x TODO - Make SSL ldap connection a configuration option (with a reasonable default)
+x TODO - Package as an RPM
+x TODO - trap error if user can't update their own record
+x TODO - Validate on forgot password screen that you entered something
+x TODO - When updating account, handle MMR not replicating yet.
+x TODO - when updating password, handle next actions, like logout 
