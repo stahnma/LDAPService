@@ -1,0 +1,11 @@
+Package:        lssm
+Version:        0.02
+Section:        web
+Priority:       optional
+Architecture:   all
+Essential:      no
+Depends:        libldap-ruby1.8, apache2.2-common
+Pre-Depends:    rake
+Maintainer:     Michael Stahnke <stahnma@websages.com>
+Description:    A simple, configurable LDAP account management utility.
+
