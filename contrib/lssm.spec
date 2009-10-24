@@ -1,5 +1,5 @@
 Name:           lssm
-Version:        0.01
+Version:        0.02
 Release:        1%{?dist}
 Summary:        Web-based self-service application for LDAP accounts
 
@@ -11,7 +11,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 
 BuildRequires:  rubygem-rake, httpd
-Requires:       ruby-ldap
+Requires:       ruby-ldap, mod_ssl
 
 %description
 A simple, configurable LDAP account management utility.  Users can
@@ -54,5 +54,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Oct 23 2009 Michael Stahnke <stahnma@websages.com> - 0.01-1
+- Added https support and ldaps
+
 * Mon Aug 17 2009 Michael Stahnke <stahnma@websages.com> - 0.01-1
 - Initial packaging.
