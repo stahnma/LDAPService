@@ -18,7 +18,17 @@ cgi = CGI.new("html4")
 options = {} 
 $session = CGI::Session.new(cgi, 'session_expires' => Time.now + config['PWReset']['Timeout'] * 60 * 60)
 $session['config'] = config
-
+# Check for SSL
+unless ENV['SERVER_PORT'] == "443"
+  stream = " " 
+  options[:errors] = "Please use https to connect."
+  stream += renderfarm('ssl.erb', options)
+  cgi.html{
+    cgi.out{ stream } 
+  }
+  exit 0
+end
+#
 def streamLogin(cgi)
  stream = " "
  options = {}
