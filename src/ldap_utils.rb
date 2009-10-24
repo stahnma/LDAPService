@@ -6,12 +6,12 @@ require 'pp'
 
 class LdapConnection 
   
-   def initialize(ssl = true)
+   def initialize()
      config = loadConfig('../configuration.yaml')
      @ldapconf = config['LDAPInfo']
      #TODO arbitrate SSL vs nonSSL
      begin
-       if ssl 
+       if @ldapconf['SSL'] == 'true'
          @conn = LDAP::SSLConn.new(@ldapconf['Host'], 636) 
        else
          @conn = LDAP::Conn.new(@ldapconf['Host']) 
