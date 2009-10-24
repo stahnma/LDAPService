@@ -8,7 +8,7 @@ LDAPInfo:
   Host:  ldap.example.com
   BaseDN: dc=example,dc=com
   # For password resets and such, this is required
-  BindDN: uid=stahnma,ou=people,dc=example,dc=com
+  BindDN: uid=pwadmin,ou=people,dc=example,dc=com
   #BindPW: You can put a PW here, or use ENV variable LDAP_PASSWORD
 
 # Note that you must modify ACIs in your LDAP directory to ensure
@@ -36,7 +36,7 @@ UserSetup:
     - example.org
     - example.com
   ExampleHostname: yoda
-  DefaultGroupID: 13804
+  DefaultGroupID: 100
   LoginShell: /bin/bash
   HomePrefix: /home
   ObjectClasses:
@@ -47,3 +47,5 @@ UserSetup:
     - posixAccount
     - shadowAccount
   AccountOU: ou=people
+  ResetURI: "https://www.exmple.com/lssm/index.rb?action=forgot"
+
