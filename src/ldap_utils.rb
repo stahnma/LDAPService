@@ -11,7 +11,7 @@ class LdapConnection
      @ldapconf = config['LDAPInfo']
      #TODO arbitrate SSL vs nonSSL
      begin
-       if @ldapconf['SSL'] == 'true'
+       if @ldapconf['SSL'] == true
          @conn = LDAP::SSLConn.new(@ldapconf['Host'], 636) 
        else
          @conn = LDAP::Conn.new(@ldapconf['Host']) 
