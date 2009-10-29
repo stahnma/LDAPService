@@ -18,7 +18,7 @@ task :apache2 do
 end
 
 task :clean  do
-  sh "rm -rf BUILD SOURCES SPECS SRPMS RPMS *.rpm *.tar.gz"
+  sh "rm -rf BUILD SOURCES SPECS SRPMS RPMS *.rpm *.tar.gz chroot"
 end
 
 task :rpmcheck_fedora do
@@ -63,4 +63,22 @@ task :rpm => [ :rpmcheck_el , :tarball , :dirs ] do
   sh "rpmbuild-md5   #{RPM_DEFINES}  -bb #{SPEC_FILE}"
   sh "mv -f RPMS/noarch/* ."
   sh "rm -rf BUILD SRPMS RPMS SPECS SOURCES"
+end
+
+"Create a chrooted install primarily used for Debain package builds."
+task :tgz do
+  chroot="chroot"
+  sh "mkdir -p #{chroot}/srv/lssm/{src,style,views}"
+  sh "cp -pr src/* #{chroot}/srv/lssm/src"
+  sh "cp -pr views/* #{chroot}/srv/lssm/views"
+  sh "cp -pr style/* #{chroot}/srv/lssm/style"
+  sh "mkdir -p #{chroot}/etc/lssm"
+  sh "cp -pr configuration.yaml #{chroot}/etc/lssm"
+  sh "pushd #{chroot}/srv/lssm; ln -s ../../etc/lssm/configuration.yaml  .; popd"
+  sh "mkdir -p #{chroot}/etc/apache2/conf.d/"
+  sh "cp -pr contrib/lssm-apache.conf  #{chroot}/etc/apache2/conf.d/"
+  sh "mkdir -p #{chroot}/usr/share/doc/lssm"
+  sh "cp -pr README TODO AUTHORS Rakefile #{chroot}/usr/share/doc/lssm"
+  sh "cp -pr contrib #{chroot}/usr/share/doc/lssm"
+  sh "cp -pr tests #{chroot}/usr/share/doc/lssm"
 end
