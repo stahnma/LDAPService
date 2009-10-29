@@ -3,6 +3,7 @@ PWD=`pwd`.strip!
 SPEC_FILE="contrib/#{NAME}.spec"
 
 RPM_DEFINES = " --define \"_specdir #{PWD}/SPECS\" --define \"_rpmdir #{PWD}/RPMS\" --define \"_sourcedir #{PWD}/SOURCES\" --define \" _srcrpmdir #{PWD}/SRPMS\" --define \"_builddir #{PWD}/BUILD\""
+CHROOT="chroot"
 
 task :default => :tarball  do 
 end
@@ -18,7 +19,7 @@ task :apache2 do
 end
 
 task :clean  do
-  sh "rm -rf BUILD SOURCES SPECS SRPMS RPMS *.rpm *.tar.gz chroot"
+  sh "rm -rf BUILD SOURCES SPECS SRPMS RPMS *.rpm *.tar.gz chroot *.tgz *.deb"
 end
 
 task :rpmcheck_fedora do
@@ -65,20 +66,25 @@ task :rpm => [ :rpmcheck_el , :tarball , :dirs ] do
   sh "rm -rf BUILD SRPMS RPMS SPECS SOURCES"
 end
 
-"Create a chrooted install primarily used for Debain package builds."
+"Create a CHROOTed install primarily used for Debain package builds."
 task :tgz do
-  chroot="chroot"
-  sh "mkdir -p #{chroot}/srv/lssm/{src,style,views}"
-  sh "cp -pr src/* #{chroot}/srv/lssm/src"
-  sh "cp -pr views/* #{chroot}/srv/lssm/views"
-  sh "cp -pr style/* #{chroot}/srv/lssm/style"
-  sh "mkdir -p #{chroot}/etc/lssm"
-  sh "cp -pr configuration.yaml #{chroot}/etc/lssm"
-  sh "pushd #{chroot}/srv/lssm; ln -s ../../etc/lssm/configuration.yaml  .; popd"
-  sh "mkdir -p #{chroot}/etc/apache2/conf.d/"
-  sh "cp -pr contrib/lssm-apache.conf  #{chroot}/etc/apache2/conf.d/"
-  sh "mkdir -p #{chroot}/usr/share/doc/lssm"
-  sh "cp -pr README TODO AUTHORS Rakefile #{chroot}/usr/share/doc/lssm"
-  sh "cp -pr contrib #{chroot}/usr/share/doc/lssm"
-  sh "cp -pr tests #{chroot}/usr/share/doc/lssm"
+  sh "mkdir -p #{CHROOT}/srv/lssm/{src,style,views}"
+  sh "cp -pr src/* #{CHROOT}/srv/lssm/src"
+  sh "cp -pr views/* #{CHROOT}/srv/lssm/views"
+  sh "cp -pr style/* #{CHROOT}/srv/lssm/style"
+  sh "mkdir -p #{CHROOT}/etc/lssm"
+  sh "cp -pr configuration.yaml #{CHROOT}/etc/lssm"
+  sh "pushd #{CHROOT}/srv/lssm; ln -s ../../etc/lssm/configuration.yaml  .; popd"
+  sh "mkdir -p #{CHROOT}/etc/apache2/conf.d/"
+  sh "cp -pr contrib/lssm-apache.conf  #{CHROOT}/etc/apache2/conf.d/"
+  sh "mkdir -p #{CHROOT}/usr/share/doc/lssm"
+  sh "cp -pr README TODO AUTHORS Rakefile #{CHROOT}/usr/share/doc/lssm"
+  sh "cp -pr contrib #{CHROOT}/usr/share/doc/lssm"
+  sh "cp -pr tests #{CHROOT}/usr/share/doc/lssm"
+end
+
+task :deb => [ :tgz ] do
+  sh "mkdir -p #{CHROOT}/DEBIAN"
+  sh "cp -pr contrib/control #{CHROOT}/DEBIAN"
+  sh "dpkg --build #{CHROOT}"
 end
