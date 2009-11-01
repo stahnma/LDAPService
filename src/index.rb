@@ -71,7 +71,8 @@ if activeSession() and cgi.params['action'].to_s != 'forgot' and $session['passw
   stream += selfManage(cgi) 
 elsif cgi.params['action'].to_s != 'login' and cgi.params['action'].to_s != 'forgot'
   # need to login
-  stream += renderfarm('login.erb')
+  options[:forgot_link] = "&action=forgot"
+  stream += renderfarm('login.erb', options)
 elsif cgi.params['action'].to_s == 'forgot'
   if cgi.params['step'].to_s == 'validate'
      unless cgi.params['login'].to_s.empty?
