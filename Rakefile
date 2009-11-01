@@ -3,7 +3,7 @@ PWD=`pwd`.strip!
 SPEC_FILE="contrib/#{NAME}.spec"
 
 RPM_DEFINES = " --define \"_specdir #{PWD}/SPECS\" --define \"_rpmdir #{PWD}/RPMS\" --define \"_sourcedir #{PWD}/SOURCES\" --define \" _srcrpmdir #{PWD}/SRPMS\" --define \"_builddir #{PWD}/BUILD\""
-CHROOT="chroot"
+CHROOT="lssm"
 
 task :default => :tarball  do 
 end
@@ -19,7 +19,7 @@ task :apache2 do
 end
 
 task :clean  do
-  sh "rm -rf BUILD SOURCES SPECS SRPMS RPMS *.rpm *.tar.gz chroot *.tgz *.deb"
+  sh "rm -rf BUILD SOURCES SPECS SRPMS RPMS *.rpm *.tar.gz #{CHROOT} *.tgz *.deb"
 end
 
 task :rpmcheck_fedora do
@@ -85,6 +85,6 @@ end
 
 task :deb => [ :tgz ] do
   sh "mkdir -p #{CHROOT}/DEBIAN"
-  sh "cp -pr contrib/control #{CHROOT}/DEBIAN"
+  sh "cp -pr contrib/deb/control #{CHROOT}/DEBIAN"
   sh "dpkg --build #{CHROOT}"
 end
