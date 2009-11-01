@@ -83,8 +83,14 @@ task :tgz do
   sh "cp -pr tests #{CHROOT}/usr/share/doc/lssm"
 end
 
+"Create a deb package"
 task :deb => [ :tgz ] do
   sh "mkdir -p #{CHROOT}/DEBIAN"
   sh "cp -pr contrib/deb/control #{CHROOT}/DEBIAN"
   sh "dpkg --build #{CHROOT}"
+end
+
+"Startup a webrick instance on port 4443 for development work"
+task :dev do
+  sh "helpers/server.rb"
 end
