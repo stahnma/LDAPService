@@ -21,7 +21,7 @@ def logout(cgi)
      rescue 
         # nothing? 
      end  
-       print cgi.header({'Status' => '302 Moved', 'location' =>  '/lssm/index.rb'})
+       print cgi.header({'Status' => '302 Moved', 'location' =>  '/'})
      exit 0
 end
 

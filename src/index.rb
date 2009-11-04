@@ -51,6 +51,7 @@ end
 
 def selfManage(cgi)
   # retreive user writable fields
+  stream = ""
   options = manageUser()
   if cgi.params['action'].to_s == 'update'
       begin
@@ -61,7 +62,7 @@ def selfManage(cgi)
          options[:errors] = boom.to_s
       end
   end
-  stream = renderfarm('manage.erb', options)
+  stream += renderfarm('manage.erb', options)
   return stream
 end
 
