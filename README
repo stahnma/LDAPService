@@ -36,6 +36,11 @@ or 'sudo rake apache2' on Debian
 * Ensure you can send email from the system
 * Update your configuration file
 
+Issue with TLS/SSL
+* If you're using SSL on your directory and your system-wide ldap.conf is not world-readable
+you can get odd errors that say 'unable to contact ldap server'.  If this happens, create a
+.ldaprc in your web-server user's home directory.  See man ldap.conf(5).
+
 
 Notes:
 ------
