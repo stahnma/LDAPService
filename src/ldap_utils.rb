@@ -33,7 +33,7 @@ class LdapConnection
      begin
        @bound = @conn.bind(dn,  pw) 
      rescue LDAP::ResultError => boom
-       raise LDAP::ResultError, boom, caller
+       raise LDAP::ResultError, "Login =>  #{boom}", caller
        return false
      end
      return true

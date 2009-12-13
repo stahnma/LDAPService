@@ -21,7 +21,7 @@ def logout(cgi)
      rescue 
         # nothing? 
      end  
-       print cgi.header({'Status' => '302 Moved', 'location' =>  '/'})
+       print cgi.header({'Status' => '302 Moved', 'location' =>  '/password'})
      exit 0
 end
 
@@ -138,7 +138,11 @@ def lookupEmail(value, field)
       raise LDAP::ResultError, boom.to_s, caller
     end
   end
-  return entry['mail'][0] 
+  begin 
+    return entry['mail'][0] 
+  rescue 
+    raise LDAP::ResultError, "Unable to find email address in directory.  Contact support directly.", caller
+  end
 end
 
 def lookupUID(value, field)

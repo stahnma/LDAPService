@@ -39,7 +39,7 @@ def streamLogin(cgi)
       $session['password'] = cgi['password'].to_s
     rescue  LDAP::ResultError => boom
        options[:errors]  =  boom.to_s
-       options[:forgot_link] = "?action=forgot"
+       options[:forgot_link] = "/password/?action=forgot"
        stream += renderfarm('login.erb', options)
     end
   end
@@ -73,7 +73,7 @@ if activeSession() and cgi.params['action'].to_s != 'forgot' and $session['passw
   stream += selfManage(cgi) 
 elsif cgi.params['action'].to_s != 'login' and cgi.params['action'].to_s != 'forgot'
   # need to login
-  options[:forgot_link] = "?action=forgot"
+  options[:forgot_link] = "/password/?action=forgot"
   stream += renderfarm('login.erb', options)
 elsif cgi.params['action'].to_s == 'forgot'
   if cgi.params['step'].to_s == 'validate'
@@ -93,7 +93,7 @@ elsif cgi.params['action'].to_s == 'forgot'
      else
         options[:errors] = "You need to enter something."
      end
-     options[:login_link] = "/"
+     options[:login_link] = "/password"
      stream += renderfarm('forgot.erb', options)
   elsif cgi.params['step'].to_s == 'reset'
      options[:login] = $session['login']
@@ -121,7 +121,7 @@ elsif cgi.params['action'].to_s == 'forgot'
          stream += renderfarm('password_reset.erb', options)
      end
   else 
-     options[:login_link] = "/"
+     options[:login_link] = "/password"
      stream += renderfarm('forgot.erb', options)
   end
 end
