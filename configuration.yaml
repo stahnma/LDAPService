@@ -10,6 +10,7 @@ LDAPInfo:
   # For password resets and such, this is required
   BindDN: uid=pwadmin,ou=people,dc=example,dc=com
   #BindPW: You can put a PW here, or use ENV variable LDAP_PASSWORD
+  SSL: true
 
 # Note that you must modify ACIs in your LDAP directory to ensure
 #  users have self-write for any attribute in this list
