@@ -38,9 +38,9 @@ end
 
 def manageUser(options = {})
    begin
-      config = $session['config']
+     config = $session['config']
    rescue NoMethodError => boom
-      raise LDAP::ResultError, "Unable to read $session", caller
+     raise LDAP::ResultError, "Unable to read $session", caller
    end
    options[:write_fields] = {}
    config['UserWritableAttrs'].each do |k, v|

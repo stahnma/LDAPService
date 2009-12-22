@@ -7,7 +7,13 @@
 
     <% options[:write_fields].each do | label, attr| -%>
     <% entry = options[:entry][attr] -%>
+      <% if entry.size == 1 -%>
 <tr><th><%= label -%></th> <td><input type="text" name=<%= attr -%> value="<%= entry -%>" /></td></tr>
+      <% else -%>
+      <% entry.each do | mv | -%>
+<tr><th><%= label -%></th> <td><input type="text" name=<%= attr -%> value="<%= mv -%>" /></td></tr>
+      <% end -%>
+      <% end -%>
     <% end -%>
     <!-- Add Password Attrs  -->
     <tr><th>Password</th><td><input type="password" name="userPassword" /></td></tr>
