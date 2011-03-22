@@ -139,7 +139,7 @@ def lookupEmail(value, field)
     end
   end
   begin 
-    return entry['mail'][0] 
+    return entry['mailDrop'][0] 
   rescue 
     raise LDAP::ResultError, "Unable to find email address in directory.  Contact support directly.", caller
   end
